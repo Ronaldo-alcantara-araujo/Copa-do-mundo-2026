@@ -65,7 +65,7 @@ Abra no Safari e toque em:
 
 ## 📄 Licença
 
-Projeto desenvolvido para uso pessoal e recreativo em bolões da Copa do Mundo FIFA 2026.
+Projeto desenvolvido para uso pessoal e recreativo da Copa do Mundo FIFA 2026.
 
 ---
 
