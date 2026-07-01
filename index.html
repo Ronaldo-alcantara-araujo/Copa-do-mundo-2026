@@ -707,6 +707,60 @@ max-width:none!important;
   #bets .bet-team-select{font-size:12px!important;height:36px!important}
 }
 
+
+/* PONTUAÇÃO EM TEMPO REAL DO BOLÃO */
+.bet-scoreboard{
+  margin:12px 0 14px!important;
+  display:grid!important;
+  gap:8px!important;
+}
+.bet-score-row{
+  display:grid!important;
+  grid-template-columns:34px 1fr auto!important;
+  align-items:center!important;
+  gap:8px!important;
+  background:#ffffff0b!important;
+  border:1px solid #ffffff16!important;
+  border-radius:14px!important;
+  padding:10px!important;
+}
+.bet-score-row.leader{
+  border-color:#FFD70099!important;
+  background:#5c410b44!important;
+}
+.bet-score-pos{
+  font-family:'Graduate',serif!important;
+  color:#FFD700!important;
+  font-size:18px!important;
+  text-align:center!important;
+}
+.bet-score-name{
+  color:#fff!important;
+  font-weight:900!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+}
+.bet-score-points{
+  font-family:'Graduate',serif!important;
+  color:#FFD700!important;
+  font-size:18px!important;
+  white-space:nowrap!important;
+}
+.bet-score-detail{
+  color:#a8b4c9!important;
+  font-size:11px!important;
+  margin-top:2px!important;
+}
+.bet-score-empty{
+  color:#a8b4c9!important;
+  font-size:13px!important;
+  background:#ffffff0b!important;
+  border:1px solid #ffffff16!important;
+  border-radius:14px!important;
+  padding:10px!important;
+}
+
 </style>
 </head><body>
 <div class="wrap">
@@ -719,6 +773,7 @@ max-width:none!important;
 <section id="bets" class="section">
   <div class="bet-card"><h2 class="bet-title">🎯 Bolão Online</h2><p class="bet-subtitle">Monte seu próprio caminho do campeão: escolha as seleções e os placares das oitavas em diante. As apostas ficam sincronizadas online para todos.</p><div id="betStatus" class="bet-status">Conectando ao Firebase...</div><div class="bet-field"><label for="betName">Nome do participante</label><input id="betName" type="text" placeholder="Digite seu nome"></div><div class="bet-field"><label for="betContact">Cidade / observação</label><input id="betContact" type="text" placeholder="Opcional"></div></div>
   <div class="bet-card"><h3 class="bet-title">Palpites</h3><p id="betIndependentHelp" class="bet-help">Escolha livremente os times e placares. Seu rascunho fica salvo neste aparelho mesmo se você trocar de aba antes de salvar.</p><div id="betGames" class="bet-games"></div><div class="bet-actions"><button id="saveBetBtn" type="button">Salvar aposta online</button><button class="ghost" id="clearBetFormBtn" type="button">Limpar formulário</button></div></div>
+  <div class="bet-card"><h3 class="bet-title">Pontuação em tempo real</h3><p class="bet-subtitle">Ranking atualizado automaticamente para todos os participantes conforme os resultados oficiais preenchidos no mata-mata.</p><div id="betScoreboard" class="bet-scoreboard"></div></div>
   <div class="bet-card"><h3 class="bet-title">Apostas salvas</h3><p class="bet-subtitle">Todos visualizam. Somente o criador exclui a própria aposta neste aparelho.</p><div id="betList" class="bet-list"></div><div id="betChampionBox"></div></div>
 </section>
 
@@ -892,7 +947,7 @@ let third=[makeMatch(103,loserOf(byId[101]),loserOf(byId[102]),'P101 x P102')];
 let final=[makeMatch(104,winnerOf(byId[101]),winnerOf(byId[102]),'V101 x V102')];
 return [{name:'16-avos de final',prefix:'M',games:r32},{name:'Oitavas de final',prefix:'M',games:r16},{name:'Quartas de final',prefix:'M',games:qf},{name:'Semifinais',prefix:'M',games:sf},{name:'3º lugar',prefix:'M',games:third},{name:'Final',prefix:'M',games:final}];}
 function renderKO(){let phases=bracket();koBox.innerHTML=phases.map(ph=>`<div class="ko-card" data-phase="${ph.prefix}"><h3>${ph.name}</h3>${ph.games.map((m,i)=>{let key='M'+m.id;let a=m.teams[0],b=m.teams[1],obj=state.ko[key]||{};let win=getWinner(obj,a,b);let c1=win&&a&&win.id===a.id?'winner':win?'loser':'';let c2=win&&b&&win.id===b.id?'winner':win?'loser':'';return `<div class="match-meta">Jogo ${m.id} • ${m.label}</div><div class="match ko-match" data-key="${key}"><div class="home team-slot ${c1}" data-side="home">${teamSelect(a,key,'home')}</div><input inputmode="numeric" pattern="[0-9]*" value="${obj.hg ?? ''}" data-ko="${key}" data-f="hg" type="number" min="0"><div class="x">x</div><input inputmode="numeric" pattern="[0-9]*" value="${obj.ag ?? ''}" data-ko="${key}" data-f="ag" type="number" min="0"><div class="away team-slot ${c2}" data-side="away">${teamSelect(b,key,'away')}</div><span class="ko-arrow"></span></div><div class="advanced-note" data-note="${key}">${win?`Avança: ${win.flag} FIFA 2026 • ${win.name}`:''}</div>`}).join('')}</div>`).join('');
-attachKOInputs();attachTeamSelects();if(typeof renderBetChampion==='function'){renderBetChampion();}renderChampion();appendToolsButton();}
+attachKOInputs();attachTeamSelects();if(typeof renderBetScoreboard==='function'){renderBetScoreboard();}if(typeof renderBetChampion==='function'){renderBetChampion();}renderChampion();appendToolsButton();}
 function attachTeamSelects(){document.querySelectorAll('select[data-ko-team]').forEach(sel=>{sel.onchange=e=>{let key=e.target.dataset.koTeam,side=e.target.dataset.side;state.koManual=state.koManual||{};state.koManual[key]=state.koManual[key]||{};if(e.target.value)state.koManual[key][side]=e.target.value;else delete state.koManual[key][side];save();};});}
 function attachKOInputs(){document.querySelectorAll('input[data-ko]').forEach(inp=>{inp.oninput=e=>{let key=e.target.dataset.ko;state.ko[key]=state.ko[key]||{};state.ko[key][e.target.dataset.f]=e.target.value===''?'':Math.max(0,parseInt(e.target.value)||0);saveOnly();updateKOView();};inp.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();focusNextInput(e.target);}};});}
 function focusNextInput(el){const inputs=[...document.querySelectorAll('input[data-m],input[data-ko]')].filter(i=>!i.disabled);const idx=inputs.indexOf(el);if(idx>=0&&idx<inputs.length-1){inputs[idx+1].focus();inputs[idx+1].select();}}
@@ -1249,6 +1304,60 @@ window.generateBetPDF=function(id){
   #bets .bet-team-select{font-size:12px!important;height:36px!important}
 }
 
+
+/* PONTUAÇÃO EM TEMPO REAL DO BOLÃO */
+.bet-scoreboard{
+  margin:12px 0 14px!important;
+  display:grid!important;
+  gap:8px!important;
+}
+.bet-score-row{
+  display:grid!important;
+  grid-template-columns:34px 1fr auto!important;
+  align-items:center!important;
+  gap:8px!important;
+  background:#ffffff0b!important;
+  border:1px solid #ffffff16!important;
+  border-radius:14px!important;
+  padding:10px!important;
+}
+.bet-score-row.leader{
+  border-color:#FFD70099!important;
+  background:#5c410b44!important;
+}
+.bet-score-pos{
+  font-family:'Graduate',serif!important;
+  color:#FFD700!important;
+  font-size:18px!important;
+  text-align:center!important;
+}
+.bet-score-name{
+  color:#fff!important;
+  font-weight:900!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+}
+.bet-score-points{
+  font-family:'Graduate',serif!important;
+  color:#FFD700!important;
+  font-size:18px!important;
+  white-space:nowrap!important;
+}
+.bet-score-detail{
+  color:#a8b4c9!important;
+  font-size:11px!important;
+  margin-top:2px!important;
+}
+.bet-score-empty{
+  color:#a8b4c9!important;
+  font-size:13px!important;
+  background:#ffffff0b!important;
+  border:1px solid #ffffff16!important;
+  border-radius:14px!important;
+  padding:10px!important;
+}
+
 </style></head><body>
   <button class="print-btn" onclick="window.print()">Salvar em PDF</button>
   <div class="page">
@@ -1277,42 +1386,96 @@ function renderBetChampion(){
   if(!box)return;
   const finalResult=(state.ko&&state.ko.M104&&state.ko.M104.hg!==''&&state.ko.M104.ag!=='');
   if(!finalResult || !onlineBets.length){box.innerHTML='';return;}
-  function real(id){
-    const r=state.ko&&state.ko['M'+id];
-    if(!r||r.hg===''||r.ag==='')return null;
-    const hg=Number(r.hg),ag=Number(r.ag);
-    return {hg,ag,w:hg>ag?'H':ag>hg?'A':'D'};
-  }
-  function gw(g){
-    const hg=Number(g.hg),ag=Number(g.ag);
-    if(!Number.isFinite(hg)||!Number.isFinite(ag))return null;
-    return hg>ag?'H':ag>hg?'A':'D';
-  }
-  function pts(b){
-    let p=0;
-    (b.guesses||[]).forEach(g=>{
-      const r=real(g.id);
-      if(!r)return;
-      const hg=Number(g.hg),ag=Number(g.ag);
-      if(!Number.isFinite(hg)||!Number.isFinite(ag))return;
-      if(hg===r.hg&&ag===r.ag)p+=3;
-      else if(gw(g)===r.w)p+=1;
-    });
-    return p;
-  }
-  const ranked=onlineBets.map(b=>({...b,_score:pts(b)})).sort((a,b)=>b._score-a._score);
+  const ranked=onlineBets.map(b=>({...b,_score:scoreBetDetailed(b)})).sort((a,b)=>b._score.pts-a._score.pts);
   const champ=ranked[0];
   box.innerHTML=`<div class="bet-champion-card">
     <img src="icons/campeao.png" alt="Campeão do Bolão" onerror="this.onerror=function(){this.style.display='none'};this.src='icons/campeao.jpg';">
     <div class="bet-champion-label">Campeão do Bolão</div>
     <div class="bet-champion-name">${champ.name||'Participante'}</div>
-    <div class="bet-champion-score">${champ._score} ponto(s)</div>
+    <div class="bet-champion-score">${champ._score.pts} ponto(s)</div>
   </div>`;
 }
 
+
+function normalizeNameForScore(s){
+  return String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]/g,'');
+}
+function findTeamFromBetLabel(label){
+  if(!label)return null;
+  const clean=normalizeNameForScore(label);
+  return allTeamsList().find(t=>{
+    const code=normalizeNameForScore(t.code||defaultCode(t.name));
+    const name=normalizeNameForScore(t.name);
+    return clean.includes(code)||clean.includes(name);
+  })||null;
+}
+function actualGameForScore(id){
+  const r=state.ko && state.ko['M'+id];
+  if(!r || r.hg==='' || r.ag==='' || r.hg===undefined || r.ag===undefined)return null;
+  const phases=typeof bracket==='function'?bracket():[];
+  let game=null;
+  phases.forEach(ph=>(ph.games||[]).forEach(g=>{if(g.id===id)game=g;}));
+  if(!game)return null;
+  return {
+    id,
+    hg:Number(r.hg),
+    ag:Number(r.ag),
+    home:game.teams&&game.teams[0]?game.teams[0]:null,
+    away:game.teams&&game.teams[1]?game.teams[1]:null,
+    winner:Number(r.hg)>Number(r.ag)?'H':(Number(r.ag)>Number(r.hg)?'A':'D')
+  };
+}
+function betSideWinner(g){
+  const hg=Number(g.hg),ag=Number(g.ag);
+  if(!Number.isFinite(hg)||!Number.isFinite(ag))return null;
+  return hg>ag?'H':(ag>hg?'A':'D');
+}
+function betTeamsMatchActual(g,real){
+  const bh=g.homeId?findTeamById(g.homeId):findTeamFromBetLabel(g.home);
+  const ba=g.awayId?findTeamById(g.awayId):findTeamFromBetLabel(g.away);
+  const homeOk=bh&&real.home&&bh.id===real.home.id;
+  const awayOk=ba&&real.away&&ba.id===real.away.id;
+  return {homeOk,awayOk,both:homeOk&&awayOk};
+}
+function scoreBetDetailed(b){
+  let pts=0, exact=0, winners=0, teams=0, played=0;
+  (b.guesses||[]).forEach(g=>{
+    const real=actualGameForScore(Number(g.id));
+    if(!real)return;
+    played++;
+    const hg=Number(g.hg),ag=Number(g.ag);
+    const match=betTeamsMatchActual(g,real);
+    if(match.homeOk) {pts+=1; teams++;}
+    if(match.awayOk) {pts+=1; teams++;}
+    if(Number.isFinite(hg)&&Number.isFinite(ag)){
+      if(match.both && hg===real.hg && ag===real.ag){pts+=5; exact++;}
+      else if(match.both && betSideWinner(g)===real.winner){pts+=3; winners++;}
+    }
+  });
+  return {pts,exact,winners,teams,played};
+}
+function renderBetScoreboard(){
+  const box=document.getElementById('betScoreboard');
+  if(!box)return;
+  if(!onlineBets || !onlineBets.length){
+    box.innerHTML='<div class="bet-score-empty">Nenhuma aposta salva ainda.</div>';
+    return;
+  }
+  const ranked=onlineBets.map(b=>({...b,_score:scoreBetDetailed(b)}))
+    .sort((a,b)=>b._score.pts-a._score.pts || b._score.exact-a._score.exact || String(a.name||'').localeCompare(String(b.name||'')));
+  box.innerHTML=ranked.map((b,i)=>`<div class="bet-score-row ${i===0?'leader':''}">
+    <div class="bet-score-pos">${i+1}º</div>
+    <div>
+      <div class="bet-score-name">${b.name||'Participante'}</div>
+      <div class="bet-score-detail">${b._score.exact} placar exato • ${b._score.winners} vencedor • ${b._score.teams} time(s)</div>
+    </div>
+    <div class="bet-score-points">${b._score.pts} pts</div>
+  </div>`).join('');
+}
+
 function renderList(){const box=document.getElementById('betList');if(!box)return;if(!onlineBets.length){box.innerHTML='<p class="bet-subtitle">Nenhuma aposta salva ainda.</p>';return}box.innerHTML=onlineBets.map(b=>{let mine=b.deviceId===deviceId;return `<div class="bet-saved ${mine?'mine':''}"><strong>${b.name}${mine?' • Minha aposta':''}</strong><span>${b.contact?b.contact+' • ':''}${b.createdText||''}</span><div class="bet-saved-actions"><button onclick="viewBetOnline('${b.id}')">Visualizar</button>${mine?`<button class="danger" onclick="deleteBetOnline('${b.id}','${b.deviceId}')">Excluir</button>`:`<button class="ghost" onclick="generateBetPDF('${b.id}')">PDF</button>`}</div></div>`}).join('')}
-window.initBets=function(){renderBetGames();loadProfile();restoreBetDraft();bindBetDraft();renderList();renderBetChampion();if(saveBetBtn)saveBetBtn.onclick=saveBet;if(clearBetFormBtn)clearBetFormBtn.onclick=clearForm}
-onSnapshot(query(collection(db,'apostas'),orderBy('createdAt','desc')),s=>{onlineBets=s.docs.map(d=>({id:d.id,...d.data()}));status('Online • '+onlineBets.length+' aposta(s) sincronizada(s)');renderList();renderBetChampion()},e=>status('Erro Firebase: '+e.message));
+window.initBets=function(){renderBetGames();loadProfile();restoreBetDraft();bindBetDraft();renderList();renderBetScoreboard();renderBetChampion();if(saveBetBtn)saveBetBtn.onclick=saveBet;if(clearBetFormBtn)clearBetFormBtn.onclick=clearForm}
+onSnapshot(query(collection(db,'apostas'),orderBy('createdAt','desc')),s=>{onlineBets=s.docs.map(d=>({id:d.id,...d.data()}));status('Online • '+onlineBets.length+' aposta(s) sincronizada(s)');renderList();renderBetScoreboard();renderBetChampion()},e=>status('Erro Firebase: '+e.message));
 setTimeout(initBets,0);
 </script>
 
@@ -1592,6 +1755,60 @@ setTimeout(initBets,0);
 }
 @media(max-width:390px){
   #bets .bet-team-select{font-size:12px!important;height:36px!important}
+}
+
+
+/* PONTUAÇÃO EM TEMPO REAL DO BOLÃO */
+.bet-scoreboard{
+  margin:12px 0 14px!important;
+  display:grid!important;
+  gap:8px!important;
+}
+.bet-score-row{
+  display:grid!important;
+  grid-template-columns:34px 1fr auto!important;
+  align-items:center!important;
+  gap:8px!important;
+  background:#ffffff0b!important;
+  border:1px solid #ffffff16!important;
+  border-radius:14px!important;
+  padding:10px!important;
+}
+.bet-score-row.leader{
+  border-color:#FFD70099!important;
+  background:#5c410b44!important;
+}
+.bet-score-pos{
+  font-family:'Graduate',serif!important;
+  color:#FFD700!important;
+  font-size:18px!important;
+  text-align:center!important;
+}
+.bet-score-name{
+  color:#fff!important;
+  font-weight:900!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+}
+.bet-score-points{
+  font-family:'Graduate',serif!important;
+  color:#FFD700!important;
+  font-size:18px!important;
+  white-space:nowrap!important;
+}
+.bet-score-detail{
+  color:#a8b4c9!important;
+  font-size:11px!important;
+  margin-top:2px!important;
+}
+.bet-score-empty{
+  color:#a8b4c9!important;
+  font-size:13px!important;
+  background:#ffffff0b!important;
+  border:1px solid #ffffff16!important;
+  border-radius:14px!important;
+  padding:10px!important;
 }
 
 </style>
