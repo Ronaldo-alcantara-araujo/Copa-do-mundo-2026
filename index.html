@@ -1003,6 +1003,17 @@ if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.ser
 render();
 
 setTimeout(function(){bindToolsButtons();appendToolsButton();},0);
+
+setTimeout(function(){
+  const panel=document.getElementById('betViewPanel');
+  if(panel && !panel.dataset.closeBound){
+    panel.dataset.closeBound='1';
+    panel.addEventListener('click',function(e){
+      if(e.target===panel) panel.classList.remove('show');
+    });
+  }
+},0);
+
 </script>
 <script>
 (function(){
@@ -1473,7 +1484,70 @@ function renderBetScoreboard(){
   </div>`).join('');
 }
 
-function renderList(){const box=document.getElementById('betList');if(!box)return;if(!onlineBets.length){box.innerHTML='<p class="bet-subtitle">Nenhuma aposta salva ainda.</p>';return}box.innerHTML=onlineBets.map(b=>{let mine=b.deviceId===deviceId;return `<div class="bet-saved ${mine?'mine':''}"><strong>${b.name}${mine?' • Minha aposta':''}</strong><span>${b.contact?b.contact+' • ':''}${b.createdText||''}</span><div class="bet-saved-actions"><button onclick="viewBetOnline('${b.id}')">Visualizar</button>${mine?`<button class="danger" onclick="deleteBetOnline('${b.id}','${b.deviceId}')">Excluir</button>`:`<button class="ghost" onclick="generateBetPDF('${b.id}')">PDF</button>`}</div></div>`}).join('')}
+
+function betEscapeHtml(s){
+  return String(s||'').replace(/[&<>"']/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m];});
+}
+window.viewBetOnline=function(id){
+  const bet=(onlineBets||[]).find(function(x){return String(x.id)===String(id);});
+  const panel=document.getElementById('betViewPanel');
+  const content=document.getElementById('betViewContent');
+  const pdfBtn=document.getElementById('betViewPdfBtn');
+  const closeBtn=document.getElementById('betViewCloseBtn');
+
+  if(!bet){
+    alert('Aposta não encontrada. Aguarde a sincronização e tente novamente.');
+    return;
+  }
+  if(!panel || !content){
+    alert('Painel de visualização não encontrado.');
+    return;
+  }
+
+  let body='<div class="bet-view-meta"><b>'+betEscapeHtml(bet.name||'Participante')+'</b><br>';
+  if(bet.contact) body+=betEscapeHtml(bet.contact)+'<br>';
+  if(bet.createdText) body+=betEscapeHtml(bet.createdText);
+  body+='</div>';
+
+  (bet.guesses||[]).forEach(function(g){
+    body+='<div class="bet-view-game">'
+      +'<small>'+betEscapeHtml(g.phase||'')+' • Jogo '+betEscapeHtml(g.id||'')+'</small>'
+      +betEscapeHtml(g.home||'---')+' <b>'+betEscapeHtml(g.hg||'-')+' x '+betEscapeHtml(g.ag||'-')+'</b> '+betEscapeHtml(g.away||'---')
+      +'</div>';
+  });
+
+  content.innerHTML=body;
+
+  if(pdfBtn){
+    pdfBtn.onclick=function(){ 
+      if(typeof window.generateBetPDF==='function') window.generateBetPDF(String(id)); 
+    };
+  }
+  if(closeBtn){
+    closeBtn.onclick=function(){ panel.classList.remove('show'); };
+  }
+  panel.classList.add('show');
+};
+
+function renderList(){
+  const box=document.getElementById('betList');
+  if(!box)return;
+  if(!onlineBets.length){
+    box.innerHTML='<p class="bet-subtitle">Nenhuma aposta salva ainda.</p>';
+    return;
+  }
+  box.innerHTML=onlineBets.map(function(b){
+    let mine=b.deviceId===deviceId;
+    return `<div class="bet-saved ${mine?'mine':''}">
+      <strong>${betEscapeHtml(b.name||'Participante')}${mine?' • Minha aposta':''}</strong>
+      <span>${b.contact?betEscapeHtml(b.contact)+' • ':''}${betEscapeHtml(b.createdText||'')}</span>
+      <div class="bet-saved-actions">
+        <button type="button" onclick="window.viewBetOnline('${b.id}')">Visualizar</button>
+        ${mine?`<button type="button" class="danger" onclick="deleteBetOnline('${b.id}','${b.deviceId}')">Excluir</button>`:`<button type="button" class="ghost" onclick="window.generateBetPDF('${b.id}')">PDF</button>`}
+      </div>
+    </div>`;
+  }).join('');
+}
 window.initBets=function(){renderBetGames();loadProfile();restoreBetDraft();bindBetDraft();renderList();renderBetScoreboard();renderBetChampion();if(saveBetBtn)saveBetBtn.onclick=saveBet;if(clearBetFormBtn)clearBetFormBtn.onclick=clearForm}
 onSnapshot(query(collection(db,'apostas'),orderBy('createdAt','desc')),s=>{onlineBets=s.docs.map(d=>({id:d.id,...d.data()}));status('Online • '+onlineBets.length+' aposta(s) sincronizada(s)');renderList();renderBetScoreboard();renderBetChampion()},e=>status('Erro Firebase: '+e.message));
 setTimeout(initBets,0);
