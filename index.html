@@ -460,7 +460,7 @@ max-width:none!important;
   <div class="tools-card"><h2 class="tools-title">🔧 Ferramentas</h2><p>Use esta área para fazer backup, restaurar dados, limpar resultados e consultar as instruções do bolão.</p></div>
   <div class="tools-card"><h3 class="tools-title">💾 Backup</h3><div class="tools-grid"><button id="toolsBackupBtn" type="button">Backup JSON</button><label><button class="ghost" type="button" id="toolsRestoreBtn">Restaurar JSON</button></label></div></div>
   <div class="tools-card"><h3 class="tools-title">🗑️ Gerenciamento</h3><div class="tools-grid"><button class="danger" id="toolsClearScoresBtn" type="button">Limpar placares</button><button class="danger" id="toolsResetKOBtn" type="button">Reiniciar mata-mata</button><button class="danger" id="toolsResetCupBtn" type="button">Reiniciar toda a Copa</button></div></div>
-  <div class="tools-card"><h3 class="tools-title">📖 Como preencher</h3><ol><li>Preencha os placares da fase de grupos.</li><li>A classificação será atualizada automaticamente por pontos, saldo de gols e gols marcados.</li><li>Os classificados serão enviados automaticamente para os 16-avos conforme a classificação dos grupos.</li><li>No mata-mata, você pode alterar manualmente qualquer seleção.</li><li>Preencha os placares até a final para definir o campeão.</li></ol></div>
+  <div class="tools-card"><h3 class="tools-title">📖 Como preencher</h3><ol><li>Preencha os placares da fase de grupos.</li><li>A classificação será atualizada automaticamente por pontos, saldo de gols e gols marcados.</li><li>Os classificados serão enviados automaticamente para os 16-avos conforme a classificação dos grupos.</li><li>No mata-mata, inclusive nos 16-avos, você pode alterar manualmente qualquer seleção quando necessário.</li><li>Preencha os placares até a final para definir o campeão.</li></ol></div>
   <div class="tools-card"><h3 class="tools-title">ℹ️ Sobre o app</h3><p>O Bolão da Copa do Mundo FIFA 2026 funciona offline e salva automaticamente os dados no navegador do dispositivo.</p><p>O aplicativo continuará recebendo melhorias e será atualizado para a próxima Copa do Mundo com a nova tabela oficial.</p></div>
   <div class="tools-footer"><strong>FIFA 2026</strong>Versão 2.0<br>Desenvolvido por Ronaldo Araujo</div>
 </section>
@@ -579,13 +579,8 @@ const FIFA_R32=[
  {id:87,home:['W','K'],away:['T','D','E','I','J','L'],label:'K1 x 3º D/E/I/J/L'},
  {id:88,home:['R','D'],away:['R','G'],label:'D2 x G2'}
 ];
-function cleanR32Manual(){
-  if(!state.koManual) return;
-  for(let i=73;i<=88;i++){
-    delete state.koManual['M'+i];
-  }
-}
-function officialR32(){cleanR32Manual();const q=getQualifiers(),used=new Set();return FIFA_R32.map(m=>applyManualMatch({id:m.id,label:m.label,teams:[slotTeam(m.home,q,used),slotTeam(m.away,q,used)]}));}
+function cleanR32Manual(){return;}
+function officialR32(){const q=getQualifiers(),used=new Set();return FIFA_R32.map(m=>applyManualMatch({id:m.id,label:m.label,teams:[slotTeam(m.home,q,used),slotTeam(m.away,q,used)]}));}
 function winnerOf(match){return getWinner(state.ko['M'+match.id],match.teams[0],match.teams[1]);}
 function loserOf(match){return getLoser(state.ko['M'+match.id],match.teams[0],match.teams[1]);}
 function makeMatch(id,a,b,label){return applyManualMatch({id,label,teams:[a||null,b||null]});}
