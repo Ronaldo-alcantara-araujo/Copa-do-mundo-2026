@@ -466,6 +466,247 @@ max-width:none!important;
 .tabs{grid-template-columns:repeat(3,1fr)!important;display:grid!important}.tabs button{min-width:0!important;width:100%!important;padding:10px 4px!important;font-size:12px!important}
 .tabs button[data-tab="bets"]::before{content:'🎯'!important;display:block!important;font-size:18px!important;margin-bottom:2px!important}
 
+
+/* AJUSTE BOLÃO ONLINE: visual igual mata-mata + modal visualizar */
+#bets .bet-game{
+  grid-template-columns:minmax(78px,1fr) 38px 8px 38px minmax(78px,1fr)!important;
+  min-height:52px!important;
+  padding:6px!important;
+  border-radius:13px!important;
+  background:#061426!important;
+  border:1px solid #1b385a!important;
+  gap:5px!important;
+}
+#bets .bet-team{
+  min-width:0!important;
+  width:100%!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:6px!important;
+  overflow:hidden!important;
+  background:#0a1a30!important;
+  border-radius:11px!important;
+  height:40px!important;
+  padding:0 4px!important;
+  font-size:14px!important;
+  font-weight:950!important;
+}
+#bets .bet-team .flag{
+  font-size:20px!important;
+  width:24px!important;
+  min-width:24px!important;
+}
+#bets .bet-team .code{
+  font-size:14px!important;
+  max-width:none!important;
+}
+#bets .bet-team.pending{color:#fff!important;font-size:20px!important;font-weight:950!important;}
+#bets .bet-team.pending::after{content:'---'!important;color:#fff!important;letter-spacing:1px!important;}
+#bets .bet-game input{
+  width:38px!important;
+  min-width:38px!important;
+  height:40px!important;
+  padding:0!important;
+  text-align:center!important;
+  font-size:16px!important;
+  font-weight:900!important;
+  border-radius:10px!important;
+  background:#111c31!important;
+  border:1px solid #2d405d!important;
+  color:#fff!important;
+}
+#bets .bet-game .x{
+  font-size:15px!important;
+  line-height:1!important;
+  color:#aeb9cb!important;
+  text-align:center!important;
+  width:8px!important;
+}
+.bet-view-panel{
+  position:fixed!important;
+  inset:0!important;
+  z-index:50!important;
+  display:none;
+  background:#020812dd!important;
+  padding:16px!important;
+  overflow:auto!important;
+}
+.bet-view-panel.show{display:block!important}
+.bet-view-card{
+  max-width:560px!important;
+  margin:20px auto 120px!important;
+  background:linear-gradient(180deg,#071c36,#061528)!important;
+  border:1px solid #1d3859!important;
+  border-radius:22px!important;
+  padding:14px!important;
+  box-shadow:0 18px 50px #000b!important;
+}
+.bet-view-title{
+  font-family:'Graduate',serif!important;
+  color:#FFD700!important;
+  text-transform:uppercase!important;
+  font-size:22px!important;
+  margin:0 0 8px!important;
+}
+.bet-view-meta{
+  color:#a8b4c9!important;
+  font-size:13px!important;
+  margin-bottom:12px!important;
+}
+.bet-view-game{
+  background:#061426!important;
+  border:1px solid #1b385a!important;
+  border-radius:14px!important;
+  padding:10px!important;
+  margin:8px 0!important;
+  color:#fff!important;
+  font-weight:800!important;
+}
+.bet-view-game small{
+  display:block!important;
+  color:#FFD700!important;
+  font-family:'Graduate',serif!important;
+  margin-bottom:5px!important;
+}
+.bet-view-actions{
+  display:grid!important;
+  grid-template-columns:1fr 1fr!important;
+  gap:8px!important;
+  margin-top:12px!important;
+}
+@media(max-width:390px){
+  #bets .bet-game{grid-template-columns:minmax(70px,1fr) 35px 7px 35px minmax(70px,1fr)!important;gap:3px!important;padding:5px!important}
+  #bets .bet-team{height:36px!important}
+  #bets .bet-team .flag{font-size:18px!important;width:22px!important;min-width:22px!important}
+  #bets .bet-team .code{font-size:12px!important}
+  #bets .bet-game input{width:35px!important;min-width:35px!important;height:36px!important;font-size:15px!important}
+}
+
+
+/* CAMPEÃO DO BOLÃO */
+.bet-champion-card{
+  margin-top:14px!important;
+  text-align:center!important;
+  background:linear-gradient(180deg,#071426,#06111f)!important;
+  border:1px solid #6a4a1288!important;
+  border-radius:22px!important;
+  padding:14px 10px 20px!important;
+  box-shadow:0 18px 40px #0007!important;
+}
+.bet-champion-card img{
+  width:100%!important;
+  max-width:330px!important;
+  height:auto!important;
+  display:block!important;
+  margin:0 auto 12px!important;
+  border-radius:16px!important;
+}
+.bet-champion-label{
+  font-family:'Graduate',serif!important;
+  color:#FFD700!important;
+  font-size:28px!important;
+  text-transform:uppercase!important;
+  letter-spacing:1px!important;
+  text-shadow:0 0 18px #ffba22!important;
+}
+.bet-champion-name{
+  font-family:'Graduate',serif!important;
+  color:#FFD700!important;
+  font-size:36px!important;
+  text-transform:uppercase!important;
+  margin-top:8px!important;
+  text-shadow:0 0 18px #ffba22!important;
+}
+.bet-champion-score{
+  color:#cbd7eb!important;
+  margin-top:8px!important;
+  font-weight:800!important;
+}
+
+
+/* AJUSTE FINAL: campeão do bolão igual ao card do mata-mata */
+#bets .bet-champion-card{
+  margin:18px auto 6px!important;
+  padding:14px 10px 20px!important;
+  max-width:100%!important;
+  text-align:center!important;
+  overflow:hidden!important;
+  background:linear-gradient(180deg,#071426,#06111f)!important;
+  border:1px solid #6a4a1288!important;
+  border-radius:22px!important;
+  box-shadow:0 18px 40px #0007!important;
+}
+#bets .bet-champion-card img{
+  width:100%!important;
+  max-width:360px!important;
+  height:auto!important;
+  display:block!important;
+  margin:0 auto 12px!important;
+  border-radius:16px!important;
+  object-fit:contain!important;
+}
+#bets .bet-champion-label{
+  font-family:'Graduate',serif!important;
+  color:#FFD700!important;
+  font-size:32px!important;
+  line-height:1!important;
+  text-transform:uppercase!important;
+  letter-spacing:1px!important;
+  text-shadow:0 0 18px #ffba22!important;
+  margin-top:8px!important;
+}
+#bets .bet-champion-name{
+  font-family:'Graduate',serif!important;
+  color:#FFD700!important;
+  font-size:42px!important;
+  line-height:1.05!important;
+  text-transform:uppercase!important;
+  letter-spacing:1px!important;
+  margin-top:10px!important;
+  text-shadow:0 0 18px #ffba22!important;
+}
+#bets .bet-champion-score{
+  color:#cbd7eb!important;
+  margin-top:8px!important;
+  font-weight:900!important;
+}
+
+
+/* BOLÃO INDEPENDENTE DO MATA-MATA */
+#bets .bet-team-select{
+  width:100%!important;
+  height:40px!important;
+  background:transparent!important;
+  border:0!important;
+  color:#fff!important;
+  font-weight:950!important;
+  text-align:center!important;
+  text-align-last:center!important;
+  font-size:13px!important;
+  outline:none!important;
+  appearance:none!important;
+  -webkit-appearance:none!important;
+  padding:0 2px!important;
+}
+#bets .bet-team-select option{
+  background:#071225!important;
+  color:#fff!important;
+}
+#bets .bet-team.pending::after{content:''!important}
+#bets .bet-team.pending{
+  color:#fff!important;
+}
+#bets .bet-help{
+  color:#a8b4c9!important;
+  font-size:12px!important;
+  line-height:1.35!important;
+  margin:8px 0 0!important;
+}
+@media(max-width:390px){
+  #bets .bet-team-select{font-size:12px!important;height:36px!important}
+}
+
 </style>
 </head><body>
 <div class="wrap">
@@ -476,9 +717,9 @@ max-width:none!important;
 
 
 <section id="bets" class="section">
-  <div class="bet-card"><h2 class="bet-title">🎯 Bolão Online</h2><p class="bet-subtitle">Aposte nos jogos das oitavas em diante. As apostas ficam sincronizadas online para todos.</p><div id="betStatus" class="bet-status">Conectando ao Firebase...</div><div class="bet-field"><label for="betName">Nome do participante</label><input id="betName" type="text" placeholder="Digite seu nome"></div><div class="bet-field"><label for="betContact">Cidade / observação</label><input id="betContact" type="text" placeholder="Opcional"></div></div>
-  <div class="bet-card"><h3 class="bet-title">Palpites</h3><div id="betGames" class="bet-games"></div><div class="bet-actions"><button id="saveBetBtn" type="button">Salvar aposta online</button><button class="ghost" id="clearBetFormBtn" type="button">Limpar formulário</button></div></div>
-  <div class="bet-card"><h3 class="bet-title">Apostas salvas</h3><p class="bet-subtitle">Todos visualizam. Somente o criador exclui a própria aposta neste aparelho.</p><div id="betList" class="bet-list"></div></div>
+  <div class="bet-card"><h2 class="bet-title">🎯 Bolão Online</h2><p class="bet-subtitle">Monte seu próprio caminho do campeão: escolha as seleções e os placares das oitavas em diante. As apostas ficam sincronizadas online para todos.</p><div id="betStatus" class="bet-status">Conectando ao Firebase...</div><div class="bet-field"><label for="betName">Nome do participante</label><input id="betName" type="text" placeholder="Digite seu nome"></div><div class="bet-field"><label for="betContact">Cidade / observação</label><input id="betContact" type="text" placeholder="Opcional"></div></div>
+  <div class="bet-card"><h3 class="bet-title">Palpites</h3><p id="betIndependentHelp" class="bet-help">Escolha livremente os times de cada confronto e informe o placar que você acredita. Não depende da tabela mata-mata.</p><div id="betGames" class="bet-games"></div><div class="bet-actions"><button id="saveBetBtn" type="button">Salvar aposta online</button><button class="ghost" id="clearBetFormBtn" type="button">Limpar formulário</button></div></div>
+  <div class="bet-card"><h3 class="bet-title">Apostas salvas</h3><p class="bet-subtitle">Todos visualizam. Somente o criador exclui a própria aposta neste aparelho.</p><div id="betList" class="bet-list"></div><div id="betChampionBox"></div></div>
 </section>
 
 <section id="tools" class="section tools-screen">
@@ -510,6 +751,18 @@ max-width:none!important;
   <div class="pwa-install-actions">
     <button id="pwaInstallAction" type="button">Instalar</button>
     <button id="pwaInstallClose" class="pwa-install-close" type="button">Agora não</button>
+  </div>
+</div>
+
+
+<div id="betViewPanel" class="bet-view-panel">
+  <div class="bet-view-card">
+    <h2 class="bet-view-title">Aposta salva</h2>
+    <div id="betViewContent"></div>
+    <div class="bet-view-actions">
+      <button id="betViewPdfBtn" type="button">Gerar PDF</button>
+      <button id="betViewCloseBtn" class="ghost" type="button">Fechar</button>
+    </div>
   </div>
 </div>
 
@@ -639,7 +892,7 @@ let third=[makeMatch(103,loserOf(byId[101]),loserOf(byId[102]),'P101 x P102')];
 let final=[makeMatch(104,winnerOf(byId[101]),winnerOf(byId[102]),'V101 x V102')];
 return [{name:'16-avos de final',prefix:'M',games:r32},{name:'Oitavas de final',prefix:'M',games:r16},{name:'Quartas de final',prefix:'M',games:qf},{name:'Semifinais',prefix:'M',games:sf},{name:'3º lugar',prefix:'M',games:third},{name:'Final',prefix:'M',games:final}];}
 function renderKO(){let phases=bracket();koBox.innerHTML=phases.map(ph=>`<div class="ko-card" data-phase="${ph.prefix}"><h3>${ph.name}</h3>${ph.games.map((m,i)=>{let key='M'+m.id;let a=m.teams[0],b=m.teams[1],obj=state.ko[key]||{};let win=getWinner(obj,a,b);let c1=win&&a&&win.id===a.id?'winner':win?'loser':'';let c2=win&&b&&win.id===b.id?'winner':win?'loser':'';return `<div class="match-meta">Jogo ${m.id} • ${m.label}</div><div class="match ko-match" data-key="${key}"><div class="home team-slot ${c1}" data-side="home">${teamSelect(a,key,'home')}</div><input inputmode="numeric" pattern="[0-9]*" value="${obj.hg ?? ''}" data-ko="${key}" data-f="hg" type="number" min="0"><div class="x">x</div><input inputmode="numeric" pattern="[0-9]*" value="${obj.ag ?? ''}" data-ko="${key}" data-f="ag" type="number" min="0"><div class="away team-slot ${c2}" data-side="away">${teamSelect(b,key,'away')}</div><span class="ko-arrow"></span></div><div class="advanced-note" data-note="${key}">${win?`Avança: ${win.flag} FIFA 2026 • ${win.name}`:''}</div>`}).join('')}</div>`).join('');
-attachKOInputs();attachTeamSelects();if(typeof renderBetGames==='function'){renderBetGames();}renderChampion();appendToolsButton();}
+attachKOInputs();attachTeamSelects();if(typeof renderBetChampion==='function'){renderBetChampion();}renderChampion();appendToolsButton();}
 function attachTeamSelects(){document.querySelectorAll('select[data-ko-team]').forEach(sel=>{sel.onchange=e=>{let key=e.target.dataset.koTeam,side=e.target.dataset.side;state.koManual=state.koManual||{};state.koManual[key]=state.koManual[key]||{};if(e.target.value)state.koManual[key][side]=e.target.value;else delete state.koManual[key][side];save();};});}
 function attachKOInputs(){document.querySelectorAll('input[data-ko]').forEach(inp=>{inp.oninput=e=>{let key=e.target.dataset.ko;state.ko[key]=state.ko[key]||{};state.ko[key][e.target.dataset.f]=e.target.value===''?'':Math.max(0,parseInt(e.target.value)||0);saveOnly();updateKOView();};inp.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();focusNextInput(e.target);}};});}
 function focusNextInput(el){const inputs=[...document.querySelectorAll('input[data-m],input[data-ko]')].filter(i=>!i.disabled);const idx=inputs.indexOf(el);if(idx>=0&&idx<inputs.length-1){inputs[idx+1].focus();inputs[idx+1].select();}}
@@ -788,18 +1041,242 @@ let onlineBets=[];
 function status(t){const e=document.getElementById('betStatus');if(e)e.textContent=t}
 function loadProfile(){try{const p=JSON.parse(localStorage.getItem(PROFILE_KEY)||'{}');if(p.name&&betName)betName.value=p.name;if(p.contact&&betContact)betContact.value=p.contact}catch(e){}}
 function saveProfile(){localStorage.setItem(PROFILE_KEY,JSON.stringify({name:betName.value.trim(),contact:betContact.value.trim()}))}
-function teamLabel(t){return t?`${t.code||defaultCode(t.name)} - ${t.name}`:'A definir'}
-function betGames(){let keep=['Oitavas de final','Quartas de final','Semifinais','3º lugar','Final'],out=[];(typeof bracket==='function'?bracket():[]).forEach(ph=>{if(keep.includes(ph.name))ph.games.forEach(g=>out.push({phase:ph.name,id:g.id,home:g.teams[0],away:g.teams[1]}))});return out}
-window.renderBetGames=function(){const box=document.getElementById('betGames');if(!box)return;let last='';box.innerHTML=betGames().map(g=>{let h=g.phase!==last?`<div class="bet-phase">${g.phase}</div>`:'';last=g.phase;return `${h}<div class="bet-game"><div class="bet-team">${teamLabel(g.home)}</div><input type="number" min="0" inputmode="numeric" data-bet-id="${g.id}" data-side="hg" placeholder="0"><div class="x">x</div><input type="number" min="0" inputmode="numeric" data-bet-id="${g.id}" data-side="ag" placeholder="0"><div class="bet-team">${teamLabel(g.away)}</div></div>`}).join('')};
-function clearForm(){document.querySelectorAll('#bets input[data-bet-id]').forEach(i=>i.value='')}
-async function saveBet(){let name=betName.value.trim();if(!name){alert('Digite o nome do participante.');return}saveProfile();let guesses=betGames().map(g=>({id:g.id,phase:g.phase,home:teamLabel(g.home),away:teamLabel(g.away),hg:document.querySelector(`#bets input[data-bet-id="${g.id}"][data-side="hg"]`)?.value||'',ag:document.querySelector(`#bets input[data-bet-id="${g.id}"][data-side="ag"]`)?.value||''}));try{await addDoc(collection(db,'apostas'),{name,contact:betContact.value.trim(),deviceId,createdText:new Date().toLocaleString('pt-BR'),createdAt:serverTimestamp(),guesses});clearForm();alert('Aposta salva online.')}catch(e){alert('Erro ao salvar: '+e.message)}}
+
+function betTeamOptions(selected){
+  const teams=(typeof allTeamsList==='function'?allTeamsList():[]);
+  return '<option value="">---</option>'+teams.map(t=>{
+    const label=`${t.flag} ${t.code||defaultCode(t.name)}`;
+    const val=t.id;
+    return `<option value="${val}" ${selected===val?'selected':''}>${label}</option>`;
+  }).join('');
+}
+function betTeamLabelById(id){
+  const t=(typeof findTeamById==='function'?findTeamById(id):null);
+  return t?`${t.code||defaultCode(t.name)} - ${t.name}`:'A definir';
+}
+function betGames(){
+  const phases=[
+    ['Oitavas de final',[89,90,91,92,93,94,95,96]],
+    ['Quartas de final',[97,98,99,100]],
+    ['Semifinais',[101,102]],
+    ['3º lugar',[103]],
+    ['Final',[104]]
+  ];
+  let out=[];
+  phases.forEach(([phase,ids])=>ids.forEach(id=>out.push({phase,id})));
+  return out;
+}
+window.renderBetGames=function(){
+  const box=document.getElementById('betGames');
+  if(!box)return;
+  let last='';
+  box.innerHTML=betGames().map(g=>{
+    let h=g.phase!==last?`<div class="bet-phase">${g.phase}</div>`:'';
+    last=g.phase;
+    return `${h}<div class="bet-game">
+      <div class="bet-team"><select class="bet-team-select" data-bet-id="${g.id}" data-side="homeTeam">${betTeamOptions('')}</select></div>
+      <input type="number" min="0" inputmode="numeric" data-bet-id="${g.id}" data-side="hg" placeholder="0">
+      <div class="x">x</div>
+      <input type="number" min="0" inputmode="numeric" data-bet-id="${g.id}" data-side="ag" placeholder="0">
+      <div class="bet-team"><select class="bet-team-select" data-bet-id="${g.id}" data-side="awayTeam">${betTeamOptions('')}</select></div>
+    </div>`;
+  }).join('');
+};
+
+function clearForm(){document.querySelectorAll('#bets input[data-bet-id]').forEach(i=>i.value='');document.querySelectorAll('#bets select[data-bet-id]').forEach(s=>s.value='')}
+async function saveBet(){
+  let name=betName.value.trim();
+  if(!name){alert('Digite o nome do participante.');return}
+  saveProfile();
+  let guesses=betGames().map(g=>{
+    const homeId=document.querySelector(`#bets select[data-bet-id="${g.id}"][data-side="homeTeam"]`)?.value||'';
+    const awayId=document.querySelector(`#bets select[data-bet-id="${g.id}"][data-side="awayTeam"]`)?.value||'';
+    return {
+      id:g.id,
+      phase:g.phase,
+      homeId,
+      awayId,
+      home:betTeamLabelById(homeId),
+      away:betTeamLabelById(awayId),
+      hg:document.querySelector(`#bets input[data-bet-id="${g.id}"][data-side="hg"]`)?.value||'',
+      ag:document.querySelector(`#bets input[data-bet-id="${g.id}"][data-side="ag"]`)?.value||''
+    };
+  });
+  try{
+    await addDoc(collection(db,'apostas'),{name,contact:betContact.value.trim(),deviceId,createdText:new Date().toLocaleString('pt-BR'),createdAt:serverTimestamp(),guesses});
+    clearForm();
+    alert('Aposta salva online.');
+  }catch(e){alert('Erro ao salvar: '+e.message)}
+}
 window.deleteBetOnline=async(id,owner)=>{if(owner!==deviceId){alert('Você só pode excluir sua própria aposta.');return}if(confirm('Excluir sua aposta?'))await deleteDoc(doc(db,'apostas',id))}
 function esc(s){return String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^\x20-\x7E]/g,'').replace(/\\/g,'\\\\').replace(/\(/g,'\\(').replace(/\)/g,'\\)')}
-function pdf(lines){let c='BT\n/F1 12 Tf\n50 790 Td\n';lines.forEach((l,i)=>{if(i)c+='0 -18 Td\n';c+='('+esc(l).slice(0,92)+') Tj\n'});c+='ET';let o=['1 0 obj << /Type /Catalog /Pages 2 0 R >> endobj','2 0 obj << /Type /Pages /Kids [3 0 R] /Count 1 >> endobj','3 0 obj << /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 4 0 R >> >> /Contents 5 0 R >> endobj','4 0 obj << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> endobj',`5 0 obj << /Length ${c.length} >> stream\n${c}\nendstream endobj`],p='%PDF-1.4\n',off=[0];o.forEach(x=>{off.push(p.length);p+=x+'\\n'});let xref=p.length;p+=`xref\n0 ${o.length+1}\n0000000000 65535 f \n`;for(let i=1;i<off.length;i++)p+=String(off[i]).padStart(10,'0')+' 00000 n \n';p+=`trailer << /Size ${o.length+1} /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF`;return new Blob([p],{type:'application/pdf'})}
-window.generateBetPDF=id=>{let b=onlineBets.find(x=>x.id===id);if(!b)return;let lines=['BOLAO COPA DO MUNDO FIFA 2026','Apostas das oitavas em diante','Participante: '+b.name,b.contact?'Obs: '+b.contact:'','Data: '+(b.createdText||''),'------------------------------'].filter(Boolean);(b.guesses||[]).forEach(g=>{lines.push(`${g.phase} - Jogo ${g.id}`);lines.push(`${g.home} ${g.hg||'-'} x ${g.ag||'-'} ${g.away}`)});let a=document.createElement('a');a.href=URL.createObjectURL(pdf(lines.slice(0,42)));a.download='bolao_'+String(b.name||'participante').replace(/\s+/g,'_')+'.pdf';a.click()}
-function renderList(){const box=document.getElementById('betList');if(!box)return;if(!onlineBets.length){box.innerHTML='<p class="bet-subtitle">Nenhuma aposta salva ainda.</p>';return}box.innerHTML=onlineBets.map(b=>{let mine=b.deviceId===deviceId;return `<div class="bet-saved ${mine?'mine':''}"><strong>${b.name}${mine?' • Minha aposta':''}</strong><span>${b.contact?b.contact+' • ':''}${b.createdText||''}</span><div class="bet-saved-actions"><button onclick="generateBetPDF('${b.id}')">Gerar PDF</button>${mine?`<button class="danger" onclick="deleteBetOnline('${b.id}','${b.deviceId}')">Excluir</button>`:`<button class="ghost" disabled>Visualizar</button>`}</div></div>`}).join('')}
-window.initBets=function(){loadProfile();renderBetGames();renderList();if(saveBetBtn)saveBetBtn.onclick=saveBet;if(clearBetFormBtn)clearBetFormBtn.onclick=clearForm}
-onSnapshot(query(collection(db,'apostas'),orderBy('createdAt','desc')),s=>{onlineBets=s.docs.map(d=>({id:d.id,...d.data()}));status('Online • '+onlineBets.length+' aposta(s) sincronizada(s)');renderList()},e=>status('Erro Firebase: '+e.message));
+function pdf(lines){
+  function centerText(txt,y,size){
+    txt=esc(txt);
+    const approx=txt.length*size*0.55;
+    const x=Math.max(40,(595-approx)/2);
+    return `BT\n/F1 ${size} Tf\n${x.toFixed(0)} ${y} Td\n(${txt}) Tj\nET\n`;
+  }
+  let c='';
+  c+='0.95 0.78 0.18 RG\n2 w\n';
+  c+='25 25 545 792 re S\n';
+  c+='0.10 0.55 0.95 RG\n1 w\n';
+  c+='38 38 519 766 re S\n';
+  c+=centerText('BOLAO DA COPA 2026',790,24);
+  c+=centerText('FIFA 2026',762,15);
+  c+='0.95 0.78 0.18 RG\n1.2 w\n80 746 435 0 m S\n';
+  c+='BT\n/F1 11 Tf\n55 720 Td\n';
+  lines.forEach((line,idx)=>{
+    if(idx>0)c+='0 -16 Td\n';
+    c+='('+esc(line).slice(0,92)+') Tj\n';
+  });
+  c+='ET';
+  c+='BT\n/F1 9 Tf\n210 42 Td\n(Gerado pelo app Bolao Copa 2026) Tj\nET\n';
+  let o=[
+    '1 0 obj << /Type /Catalog /Pages 2 0 R >> endobj',
+    '2 0 obj << /Type /Pages /Kids [3 0 R] /Count 1 >> endobj',
+    '3 0 obj << /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 4 0 R >> >> /Contents 5 0 R >> endobj',
+    '4 0 obj << /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >> endobj',
+    `5 0 obj << /Length ${c.length} >> stream\n${c}\nendstream endobj`
+  ],p='%PDF-1.4\n',off=[0];
+  o.forEach(x=>{off.push(p.length);p+=x+'\\n'});
+  let xref=p.length;
+  p+=`xref\n0 ${o.length+1}\n0000000000 65535 f \n`;
+  for(let i=1;i<off.length;i++)p+=String(off[i]).padStart(10,'0')+' 00000 n \n';
+  p+=`trailer << /Size ${o.length+1} /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF`;
+  return new Blob([p],{type:'application/pdf'});
+}
+
+function pdfSafe(s){return String(s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+window.generateBetPDF=function(id){
+  let b=onlineBets.find(x=>x.id===id);
+  if(!b)return;
+  const rows=(b.guesses||[]).map(g=>`
+    <div class="pdf-game">
+      <div class="pdf-phase">${pdfSafe(g.phase||'')} • Jogo ${pdfSafe(g.id||'')}</div>
+      <div class="pdf-match">${pdfSafe(g.home||'---')} <b>${pdfSafe(g.hg||'-')} x ${pdfSafe(g.ag||'-')}</b> ${pdfSafe(g.away||'---')}</div>
+    </div>`).join('');
+  const doc=window.open('','_blank');
+  if(!doc){alert('Permita pop-ups para gerar o PDF.');return;}
+  doc.document.write(`<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><title>Bolão ${pdfSafe(b.name||'')}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Graduate&display=swap" rel="stylesheet">
+  <style>
+    @page{size:A4;margin:12mm}
+    *{box-sizing:border-box}
+    body{margin:0;background:#fff;color:#071225;font-family:Arial,Helvetica,sans-serif}
+    .page{min-height:calc(297mm - 24mm);border:3px solid #d8ad24;border-radius:2px;padding:22px 26px 24px;position:relative}
+    .brand{text-align:center;margin-bottom:14px}
+    .brand h1{font-family:'Graduate',serif;margin:0;color:#071225;font-size:28px;letter-spacing:1px;text-transform:uppercase}
+    .brand h2{font-family:'Graduate',serif;margin:6px 0 0;color:#d8ad24;font-size:17px;letter-spacing:1px;text-transform:uppercase}
+    .hero-img{display:block;width:100%;max-width:270px;margin:8px auto 12px;border-radius:14px}
+    .info{border:1px solid #d8ad24;border-radius:12px;padding:10px 12px;margin:10px 0 14px;font-size:13px;line-height:1.4}
+    .info b{color:#071225}
+    .section-title{font-family:'Graduate',serif;color:#071225;font-size:17px;margin:14px 0 8px;text-transform:uppercase}
+    .pdf-game{border-bottom:1px solid #e5e7eb;padding:7px 0;break-inside:avoid}
+    .pdf-phase{font-family:'Graduate',serif;color:#d8ad24;font-size:11px;text-transform:uppercase;margin-bottom:3px}
+    .pdf-match{font-size:13px;font-weight:700;line-height:1.3}
+    .footer{position:absolute;left:26px;right:26px;bottom:12px;text-align:center;font-size:10px;color:#667085}
+    .print-btn{position:fixed;right:16px;bottom:16px;background:#071225;color:white;border:0;border-radius:12px;padding:12px 16px;font-weight:800}
+    @media print{.print-btn{display:none}.page{min-height:auto}}
+  
+/* BOLÃO INDEPENDENTE DO MATA-MATA */
+#bets .bet-team-select{
+  width:100%!important;
+  height:40px!important;
+  background:transparent!important;
+  border:0!important;
+  color:#fff!important;
+  font-weight:950!important;
+  text-align:center!important;
+  text-align-last:center!important;
+  font-size:13px!important;
+  outline:none!important;
+  appearance:none!important;
+  -webkit-appearance:none!important;
+  padding:0 2px!important;
+}
+#bets .bet-team-select option{
+  background:#071225!important;
+  color:#fff!important;
+}
+#bets .bet-team.pending::after{content:''!important}
+#bets .bet-team.pending{
+  color:#fff!important;
+}
+#bets .bet-help{
+  color:#a8b4c9!important;
+  font-size:12px!important;
+  line-height:1.35!important;
+  margin:8px 0 0!important;
+}
+@media(max-width:390px){
+  #bets .bet-team-select{font-size:12px!important;height:36px!important}
+}
+
+</style></head><body>
+  <button class="print-btn" onclick="window.print()">Salvar em PDF</button>
+  <div class="page">
+    <div class="brand">
+      <h1>Bolão da Copa 2026</h1>
+      <h2>FIFA 2026</h2>
+      <img class="hero-img" src="icons/campeao.png" onerror="this.onerror=function(){this.style.display='none'};this.src='icons/campeao.jpg';" alt="Campeão">
+    </div>
+    <div class="info">
+      <div><b>Participante:</b> ${pdfSafe(b.name)}</div>
+      ${b.contact?`<div><b>Obs:</b> ${pdfSafe(b.contact)}</div>`:''}
+      <div><b>Data:</b> ${pdfSafe(b.createdText||'')}</div>
+    </div>
+    <div class="section-title">Apostas livres das oitavas em diante</div>
+    ${rows}
+    <div class="footer">Gerado pelo app Bolão Copa 2026</div>
+  </div>
+  <script>setTimeout(()=>window.print(),600)<\/script>
+  </body></html>`);
+  doc.document.close();
+};
+
+
+function renderBetChampion(){
+  const box=document.getElementById('betChampionBox');
+  if(!box)return;
+  const finalResult=(state.ko&&state.ko.M104&&state.ko.M104.hg!==''&&state.ko.M104.ag!=='');
+  if(!finalResult || !onlineBets.length){box.innerHTML='';return;}
+  function real(id){
+    const r=state.ko&&state.ko['M'+id];
+    if(!r||r.hg===''||r.ag==='')return null;
+    const hg=Number(r.hg),ag=Number(r.ag);
+    return {hg,ag,w:hg>ag?'H':ag>hg?'A':'D'};
+  }
+  function gw(g){
+    const hg=Number(g.hg),ag=Number(g.ag);
+    if(!Number.isFinite(hg)||!Number.isFinite(ag))return null;
+    return hg>ag?'H':ag>hg?'A':'D';
+  }
+  function pts(b){
+    let p=0;
+    (b.guesses||[]).forEach(g=>{
+      const r=real(g.id);
+      if(!r)return;
+      const hg=Number(g.hg),ag=Number(g.ag);
+      if(!Number.isFinite(hg)||!Number.isFinite(ag))return;
+      if(hg===r.hg&&ag===r.ag)p+=3;
+      else if(gw(g)===r.w)p+=1;
+    });
+    return p;
+  }
+  const ranked=onlineBets.map(b=>({...b,_score:pts(b)})).sort((a,b)=>b._score-a._score);
+  const champ=ranked[0];
+  box.innerHTML=`<div class="bet-champion-card">
+    <img src="icons/campeao.png" alt="Campeão do Bolão" onerror="this.onerror=function(){this.style.display='none'};this.src='icons/campeao.jpg';">
+    <div class="bet-champion-label">Campeão do Bolão</div>
+    <div class="bet-champion-name">${champ.name||'Participante'}</div>
+    <div class="bet-champion-score">${champ._score} ponto(s)</div>
+  </div>`;
+}
+
+function renderList(){const box=document.getElementById('betList');if(!box)return;if(!onlineBets.length){box.innerHTML='<p class="bet-subtitle">Nenhuma aposta salva ainda.</p>';return}box.innerHTML=onlineBets.map(b=>{let mine=b.deviceId===deviceId;return `<div class="bet-saved ${mine?'mine':''}"><strong>${b.name}${mine?' • Minha aposta':''}</strong><span>${b.contact?b.contact+' • ':''}${b.createdText||''}</span><div class="bet-saved-actions"><button onclick="viewBetOnline('${b.id}')">Visualizar</button>${mine?`<button class="danger" onclick="deleteBetOnline('${b.id}','${b.deviceId}')">Excluir</button>`:`<button class="ghost" onclick="generateBetPDF('${b.id}')">PDF</button>`}</div></div>`}).join('')}
+window.initBets=function(){loadProfile();renderBetGames();renderList();renderBetChampion();if(saveBetBtn)saveBetBtn.onclick=saveBet;if(clearBetFormBtn)clearBetFormBtn.onclick=clearForm}
+onSnapshot(query(collection(db,'apostas'),orderBy('createdAt','desc')),s=>{onlineBets=s.docs.map(d=>({id:d.id,...d.data()}));status('Online • '+onlineBets.length+' aposta(s) sincronizada(s)');renderList();renderBetChampion()},e=>status('Erro Firebase: '+e.message));
 setTimeout(initBets,0);
 </script>
 
@@ -839,5 +1316,246 @@ setTimeout(initBets,0);
 .bet-saved-actions{display:grid!important;grid-template-columns:1fr 1fr!important;gap:8px!important}.bet-saved-actions button{min-height:42px!important;border-radius:14px!important;padding:8px!important}
 .tabs{grid-template-columns:repeat(3,1fr)!important;display:grid!important}.tabs button{min-width:0!important;width:100%!important;padding:10px 4px!important;font-size:12px!important}
 .tabs button[data-tab="bets"]::before{content:'🎯'!important;display:block!important;font-size:18px!important;margin-bottom:2px!important}
+
+
+/* AJUSTE BOLÃO ONLINE: visual igual mata-mata + modal visualizar */
+#bets .bet-game{
+  grid-template-columns:minmax(78px,1fr) 38px 8px 38px minmax(78px,1fr)!important;
+  min-height:52px!important;
+  padding:6px!important;
+  border-radius:13px!important;
+  background:#061426!important;
+  border:1px solid #1b385a!important;
+  gap:5px!important;
+}
+#bets .bet-team{
+  min-width:0!important;
+  width:100%!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:6px!important;
+  overflow:hidden!important;
+  background:#0a1a30!important;
+  border-radius:11px!important;
+  height:40px!important;
+  padding:0 4px!important;
+  font-size:14px!important;
+  font-weight:950!important;
+}
+#bets .bet-team .flag{
+  font-size:20px!important;
+  width:24px!important;
+  min-width:24px!important;
+}
+#bets .bet-team .code{
+  font-size:14px!important;
+  max-width:none!important;
+}
+#bets .bet-team.pending{color:#fff!important;font-size:20px!important;font-weight:950!important;}
+#bets .bet-team.pending::after{content:'---'!important;color:#fff!important;letter-spacing:1px!important;}
+#bets .bet-game input{
+  width:38px!important;
+  min-width:38px!important;
+  height:40px!important;
+  padding:0!important;
+  text-align:center!important;
+  font-size:16px!important;
+  font-weight:900!important;
+  border-radius:10px!important;
+  background:#111c31!important;
+  border:1px solid #2d405d!important;
+  color:#fff!important;
+}
+#bets .bet-game .x{
+  font-size:15px!important;
+  line-height:1!important;
+  color:#aeb9cb!important;
+  text-align:center!important;
+  width:8px!important;
+}
+.bet-view-panel{
+  position:fixed!important;
+  inset:0!important;
+  z-index:50!important;
+  display:none;
+  background:#020812dd!important;
+  padding:16px!important;
+  overflow:auto!important;
+}
+.bet-view-panel.show{display:block!important}
+.bet-view-card{
+  max-width:560px!important;
+  margin:20px auto 120px!important;
+  background:linear-gradient(180deg,#071c36,#061528)!important;
+  border:1px solid #1d3859!important;
+  border-radius:22px!important;
+  padding:14px!important;
+  box-shadow:0 18px 50px #000b!important;
+}
+.bet-view-title{
+  font-family:'Graduate',serif!important;
+  color:#FFD700!important;
+  text-transform:uppercase!important;
+  font-size:22px!important;
+  margin:0 0 8px!important;
+}
+.bet-view-meta{
+  color:#a8b4c9!important;
+  font-size:13px!important;
+  margin-bottom:12px!important;
+}
+.bet-view-game{
+  background:#061426!important;
+  border:1px solid #1b385a!important;
+  border-radius:14px!important;
+  padding:10px!important;
+  margin:8px 0!important;
+  color:#fff!important;
+  font-weight:800!important;
+}
+.bet-view-game small{
+  display:block!important;
+  color:#FFD700!important;
+  font-family:'Graduate',serif!important;
+  margin-bottom:5px!important;
+}
+.bet-view-actions{
+  display:grid!important;
+  grid-template-columns:1fr 1fr!important;
+  gap:8px!important;
+  margin-top:12px!important;
+}
+@media(max-width:390px){
+  #bets .bet-game{grid-template-columns:minmax(70px,1fr) 35px 7px 35px minmax(70px,1fr)!important;gap:3px!important;padding:5px!important}
+  #bets .bet-team{height:36px!important}
+  #bets .bet-team .flag{font-size:18px!important;width:22px!important;min-width:22px!important}
+  #bets .bet-team .code{font-size:12px!important}
+  #bets .bet-game input{width:35px!important;min-width:35px!important;height:36px!important;font-size:15px!important}
+}
+
+
+/* CAMPEÃO DO BOLÃO */
+.bet-champion-card{
+  margin-top:14px!important;
+  text-align:center!important;
+  background:linear-gradient(180deg,#071426,#06111f)!important;
+  border:1px solid #6a4a1288!important;
+  border-radius:22px!important;
+  padding:14px 10px 20px!important;
+  box-shadow:0 18px 40px #0007!important;
+}
+.bet-champion-card img{
+  width:100%!important;
+  max-width:330px!important;
+  height:auto!important;
+  display:block!important;
+  margin:0 auto 12px!important;
+  border-radius:16px!important;
+}
+.bet-champion-label{
+  font-family:'Graduate',serif!important;
+  color:#FFD700!important;
+  font-size:28px!important;
+  text-transform:uppercase!important;
+  letter-spacing:1px!important;
+  text-shadow:0 0 18px #ffba22!important;
+}
+.bet-champion-name{
+  font-family:'Graduate',serif!important;
+  color:#FFD700!important;
+  font-size:36px!important;
+  text-transform:uppercase!important;
+  margin-top:8px!important;
+  text-shadow:0 0 18px #ffba22!important;
+}
+.bet-champion-score{
+  color:#cbd7eb!important;
+  margin-top:8px!important;
+  font-weight:800!important;
+}
+
+
+/* AJUSTE FINAL: campeão do bolão igual ao card do mata-mata */
+#bets .bet-champion-card{
+  margin:18px auto 6px!important;
+  padding:14px 10px 20px!important;
+  max-width:100%!important;
+  text-align:center!important;
+  overflow:hidden!important;
+  background:linear-gradient(180deg,#071426,#06111f)!important;
+  border:1px solid #6a4a1288!important;
+  border-radius:22px!important;
+  box-shadow:0 18px 40px #0007!important;
+}
+#bets .bet-champion-card img{
+  width:100%!important;
+  max-width:360px!important;
+  height:auto!important;
+  display:block!important;
+  margin:0 auto 12px!important;
+  border-radius:16px!important;
+  object-fit:contain!important;
+}
+#bets .bet-champion-label{
+  font-family:'Graduate',serif!important;
+  color:#FFD700!important;
+  font-size:32px!important;
+  line-height:1!important;
+  text-transform:uppercase!important;
+  letter-spacing:1px!important;
+  text-shadow:0 0 18px #ffba22!important;
+  margin-top:8px!important;
+}
+#bets .bet-champion-name{
+  font-family:'Graduate',serif!important;
+  color:#FFD700!important;
+  font-size:42px!important;
+  line-height:1.05!important;
+  text-transform:uppercase!important;
+  letter-spacing:1px!important;
+  margin-top:10px!important;
+  text-shadow:0 0 18px #ffba22!important;
+}
+#bets .bet-champion-score{
+  color:#cbd7eb!important;
+  margin-top:8px!important;
+  font-weight:900!important;
+}
+
+
+/* BOLÃO INDEPENDENTE DO MATA-MATA */
+#bets .bet-team-select{
+  width:100%!important;
+  height:40px!important;
+  background:transparent!important;
+  border:0!important;
+  color:#fff!important;
+  font-weight:950!important;
+  text-align:center!important;
+  text-align-last:center!important;
+  font-size:13px!important;
+  outline:none!important;
+  appearance:none!important;
+  -webkit-appearance:none!important;
+  padding:0 2px!important;
+}
+#bets .bet-team-select option{
+  background:#071225!important;
+  color:#fff!important;
+}
+#bets .bet-team.pending::after{content:''!important}
+#bets .bet-team.pending{
+  color:#fff!important;
+}
+#bets .bet-help{
+  color:#a8b4c9!important;
+  font-size:12px!important;
+  line-height:1.35!important;
+  margin:8px 0 0!important;
+}
+@media(max-width:390px){
+  #bets .bet-team-select{font-size:12px!important;height:36px!important}
+}
 
 </style>
