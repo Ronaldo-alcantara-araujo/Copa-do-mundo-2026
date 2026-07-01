@@ -718,7 +718,7 @@ max-width:none!important;
 
 <section id="bets" class="section">
   <div class="bet-card"><h2 class="bet-title">🎯 Bolão Online</h2><p class="bet-subtitle">Monte seu próprio caminho do campeão: escolha as seleções e os placares das oitavas em diante. As apostas ficam sincronizadas online para todos.</p><div id="betStatus" class="bet-status">Conectando ao Firebase...</div><div class="bet-field"><label for="betName">Nome do participante</label><input id="betName" type="text" placeholder="Digite seu nome"></div><div class="bet-field"><label for="betContact">Cidade / observação</label><input id="betContact" type="text" placeholder="Opcional"></div></div>
-  <div class="bet-card"><h3 class="bet-title">Palpites</h3><p id="betIndependentHelp" class="bet-help">Escolha livremente os times de cada confronto e informe o placar que você acredita. Não depende da tabela mata-mata.</p><div id="betGames" class="bet-games"></div><div class="bet-actions"><button id="saveBetBtn" type="button">Salvar aposta online</button><button class="ghost" id="clearBetFormBtn" type="button">Limpar formulário</button></div></div>
+  <div class="bet-card"><h3 class="bet-title">Palpites</h3><p id="betIndependentHelp" class="bet-help">Escolha livremente os times e placares. Seu rascunho fica salvo neste aparelho mesmo se você trocar de aba antes de salvar.</p><div id="betGames" class="bet-games"></div><div class="bet-actions"><button id="saveBetBtn" type="button">Salvar aposta online</button><button class="ghost" id="clearBetFormBtn" type="button">Limpar formulário</button></div></div>
   <div class="bet-card"><h3 class="bet-title">Apostas salvas</h3><p class="bet-subtitle">Todos visualizam. Somente o criador exclui a própria aposta neste aparelho.</p><div id="betList" class="bet-list"></div><div id="betChampionBox"></div></div>
 </section>
 
@@ -1083,7 +1083,42 @@ window.renderBetGames=function(){
   }).join('');
 };
 
-function clearForm(){document.querySelectorAll('#bets input[data-bet-id]').forEach(i=>i.value='');document.querySelectorAll('#bets select[data-bet-id]').forEach(s=>s.value='')}
+
+const BET_DRAFT_KEY='copa2026-bolao-rascunho-v1';
+
+function saveBetDraft(){
+  const draft={
+    name:(document.getElementById('betName')?.value||''),
+    contact:(document.getElementById('betContact')?.value||''),
+    fields:{}
+  };
+  document.querySelectorAll('#bets select[data-bet-id],#bets input[data-bet-id]').forEach(el=>{
+    draft.fields[`${el.dataset.betId}_${el.dataset.side}`]=el.value;
+  });
+  localStorage.setItem(BET_DRAFT_KEY,JSON.stringify(draft));
+}
+function restoreBetDraft(){
+  try{
+    const draft=JSON.parse(localStorage.getItem(BET_DRAFT_KEY)||'{}');
+    if(draft.name && document.getElementById('betName')) document.getElementById('betName').value=draft.name;
+    if(draft.contact && document.getElementById('betContact')) document.getElementById('betContact').value=draft.contact;
+    if(draft.fields){
+      Object.entries(draft.fields).forEach(([key,val])=>{
+        const p=key.split('_');
+        const el=document.querySelector(`#bets [data-bet-id="${p[0]}"][data-side="${p[1]}"]`);
+        if(el) el.value=val;
+      });
+    }
+  }catch(e){}
+}
+function bindBetDraft(){
+  document.querySelectorAll('#bets select[data-bet-id],#bets input[data-bet-id],#betName,#betContact').forEach(el=>{
+    el.addEventListener('input',saveBetDraft);
+    el.addEventListener('change',saveBetDraft);
+  });
+}
+
+function clearForm(){document.querySelectorAll('#bets input[data-bet-id]').forEach(i=>i.value='');document.querySelectorAll('#bets select[data-bet-id]').forEach(s=>s.value='');localStorage.removeItem(BET_DRAFT_KEY)}
 async function saveBet(){
   let name=betName.value.trim();
   if(!name){alert('Digite o nome do participante.');return}
@@ -1105,6 +1140,7 @@ async function saveBet(){
   try{
     await addDoc(collection(db,'apostas'),{name,contact:betContact.value.trim(),deviceId,createdText:new Date().toLocaleString('pt-BR'),createdAt:serverTimestamp(),guesses});
     clearForm();
+    localStorage.removeItem(BET_DRAFT_KEY);
     alert('Aposta salva online.');
   }catch(e){alert('Erro ao salvar: '+e.message)}
 }
@@ -1275,7 +1311,7 @@ function renderBetChampion(){
 }
 
 function renderList(){const box=document.getElementById('betList');if(!box)return;if(!onlineBets.length){box.innerHTML='<p class="bet-subtitle">Nenhuma aposta salva ainda.</p>';return}box.innerHTML=onlineBets.map(b=>{let mine=b.deviceId===deviceId;return `<div class="bet-saved ${mine?'mine':''}"><strong>${b.name}${mine?' • Minha aposta':''}</strong><span>${b.contact?b.contact+' • ':''}${b.createdText||''}</span><div class="bet-saved-actions"><button onclick="viewBetOnline('${b.id}')">Visualizar</button>${mine?`<button class="danger" onclick="deleteBetOnline('${b.id}','${b.deviceId}')">Excluir</button>`:`<button class="ghost" onclick="generateBetPDF('${b.id}')">PDF</button>`}</div></div>`}).join('')}
-window.initBets=function(){loadProfile();renderBetGames();renderList();renderBetChampion();if(saveBetBtn)saveBetBtn.onclick=saveBet;if(clearBetFormBtn)clearBetFormBtn.onclick=clearForm}
+window.initBets=function(){renderBetGames();loadProfile();restoreBetDraft();bindBetDraft();renderList();renderBetChampion();if(saveBetBtn)saveBetBtn.onclick=saveBet;if(clearBetFormBtn)clearBetFormBtn.onclick=clearForm}
 onSnapshot(query(collection(db,'apostas'),orderBy('createdAt','desc')),s=>{onlineBets=s.docs.map(d=>({id:d.id,...d.data()}));status('Online • '+onlineBets.length+' aposta(s) sincronizada(s)');renderList();renderBetChampion()},e=>status('Erro Firebase: '+e.message));
 setTimeout(initBets,0);
 </script>
