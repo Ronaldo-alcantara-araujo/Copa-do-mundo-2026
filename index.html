@@ -587,8 +587,8 @@ function makeMatch(id,a,b,label){return applyManualMatch({id,label,teams:[a||nul
 function bracket(){let r32=officialR32();
 let byId=Object.fromEntries(r32.map(m=>[m.id,m]));
 let r16=[
- makeMatch(89,winnerOf(byId[73]),winnerOf(byId[75]),'V73 x V75'),
- makeMatch(90,winnerOf(byId[74]),winnerOf(byId[77]),'V74 x V77'),
+ makeMatch(89,winnerOf(byId[74]),winnerOf(byId[77]),'V74 x V77'),
+ makeMatch(90,winnerOf(byId[73]),winnerOf(byId[75]),'V73 x V75'),
  makeMatch(91,winnerOf(byId[76]),winnerOf(byId[78]),'V76 x V78'),
  makeMatch(92,winnerOf(byId[79]),winnerOf(byId[80]),'V79 x V80'),
  makeMatch(93,winnerOf(byId[83]),winnerOf(byId[84]),'V83 x V84'),
