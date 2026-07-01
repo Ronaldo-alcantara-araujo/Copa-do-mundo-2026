@@ -447,6 +447,25 @@ max-width:none!important;
 .tools-back{width:100%!important;margin:0 0 14px!important;background:#ffffff12!important;border:1px solid #ffffff22!important;box-shadow:none!important}
 .tools-footer{text-align:center!important;color:#a8b4c9!important;font-size:13px!important;padding:8px 0 4px!important}.tools-footer strong{display:block!important;color:#FFD700!important;font-family:'Graduate',serif!important;font-size:18px!important;margin-bottom:4px!important}
 
+
+/* BOLÃO ONLINE FIREBASE */
+#bets .bet-card{background:linear-gradient(180deg,#071c36,#061528)!important;border:1px solid #1d3859!important;border-radius:22px!important;padding:14px!important;margin-bottom:14px!important}
+#bets .bet-title{font-family:'Graduate',serif!important;color:#FFD700!important;text-transform:uppercase!important;letter-spacing:1px!important;margin:0 0 12px!important;font-size:22px!important}
+#bets .bet-subtitle,.bet-status{color:#cbd7eb!important;font-size:13px!important;line-height:1.4!important;margin:0 0 12px!important}
+.bet-status{background:#ffffff0b!important;border:1px solid #ffffff16!important;border-radius:14px!important;padding:10px!important}
+.bet-field{display:grid!important;gap:6px!important;margin-bottom:10px!important}.bet-field label{color:#a8b4c9!important;font-size:12px!important;font-weight:800!important}
+.bet-field input{width:100%!important;min-height:46px!important;border-radius:14px!important;border:1px solid #ffffff24!important;background:#071225!important;color:#fff!important;padding:10px 12px!important}
+.bet-games,.bet-list{display:grid!important;gap:10px!important}.bet-phase{margin-top:14px!important;font-family:'Graduate',serif!important;color:#FFD700!important;font-size:15px!important;text-transform:uppercase!important}
+.bet-game{display:grid!important;grid-template-columns:minmax(72px,1fr) 42px 12px 42px minmax(72px,1fr)!important;align-items:center!important;gap:6px!important;background:#061426!important;border:1px solid #1b385a!important;border-radius:14px!important;padding:8px!important}
+.bet-team{min-height:40px!important;display:flex!important;align-items:center!important;justify-content:center!important;text-align:center!important;border-radius:11px!important;background:#0a1a30!important;color:#fff!important;font-weight:900!important;font-size:13px!important;padding:4px!important}
+.bet-game input{width:42px!important;height:40px!important;border-radius:10px!important;border:1px solid #2d405d!important;background:#111c31!important;color:#fff!important;text-align:center!important;font-weight:900!important}
+.bet-actions{display:grid!important;gap:10px!important;margin-top:14px!important}.bet-actions button{width:100%!important;min-height:50px!important;border-radius:16px!important}
+.bet-saved{background:#ffffff0b!important;border:1px solid #ffffff16!important;border-radius:16px!important;padding:12px!important}.bet-saved.mine{border-color:#06b96999!important;background:#06351f55!important}
+.bet-saved strong{display:block!important;color:#fff!important;margin-bottom:4px!important}.bet-saved span{display:block!important;color:#a8b4c9!important;font-size:12px!important;margin-bottom:10px!important}
+.bet-saved-actions{display:grid!important;grid-template-columns:1fr 1fr!important;gap:8px!important}.bet-saved-actions button{min-height:42px!important;border-radius:14px!important;padding:8px!important}
+.tabs{grid-template-columns:repeat(3,1fr)!important;display:grid!important}.tabs button{min-width:0!important;width:100%!important;padding:10px 4px!important;font-size:12px!important}
+.tabs button[data-tab="bets"]::before{content:'🎯'!important;display:block!important;font-size:18px!important;margin-bottom:2px!important}
+
 </style>
 </head><body>
 <div class="wrap">
@@ -454,6 +473,13 @@ max-width:none!important;
 <main>
 <section id="groups" class="section active"><div id="groupsBox" class="grid"></div></section>
 <section id="knockout" class="section"><div id="koBox" class="ko-grid"></div><div id="championBox"></div></section>
+
+
+<section id="bets" class="section">
+  <div class="bet-card"><h2 class="bet-title">🎯 Bolão Online</h2><p class="bet-subtitle">Aposte nos jogos das oitavas em diante. As apostas ficam sincronizadas online para todos.</p><div id="betStatus" class="bet-status">Conectando ao Firebase...</div><div class="bet-field"><label for="betName">Nome do participante</label><input id="betName" type="text" placeholder="Digite seu nome"></div><div class="bet-field"><label for="betContact">Cidade / observação</label><input id="betContact" type="text" placeholder="Opcional"></div></div>
+  <div class="bet-card"><h3 class="bet-title">Palpites</h3><div id="betGames" class="bet-games"></div><div class="bet-actions"><button id="saveBetBtn" type="button">Salvar aposta online</button><button class="ghost" id="clearBetFormBtn" type="button">Limpar formulário</button></div></div>
+  <div class="bet-card"><h3 class="bet-title">Apostas salvas</h3><p class="bet-subtitle">Todos visualizam. Somente o criador exclui a própria aposta neste aparelho.</p><div id="betList" class="bet-list"></div></div>
+</section>
 
 <section id="tools" class="section tools-screen">
   <button class="tools-back" type="button" id="toolsBackBtn">← Voltar para o mata-mata</button>
@@ -487,7 +513,7 @@ max-width:none!important;
   </div>
 </div>
 
-<nav class="tabs"><button class="active" data-tab="groups">Grupos</button><button data-tab="knockout">Mata-mata</button></nav>
+<nav class="tabs"><button class="active" data-tab="groups">Grupos</button><button data-tab="knockout">Mata-mata</button><button data-tab="bets">Bolão</button></nav>
 
 <script>
 const KEY='copa2026-auto-chaveamento-v3';
@@ -613,7 +639,7 @@ let third=[makeMatch(103,loserOf(byId[101]),loserOf(byId[102]),'P101 x P102')];
 let final=[makeMatch(104,winnerOf(byId[101]),winnerOf(byId[102]),'V101 x V102')];
 return [{name:'16-avos de final',prefix:'M',games:r32},{name:'Oitavas de final',prefix:'M',games:r16},{name:'Quartas de final',prefix:'M',games:qf},{name:'Semifinais',prefix:'M',games:sf},{name:'3º lugar',prefix:'M',games:third},{name:'Final',prefix:'M',games:final}];}
 function renderKO(){let phases=bracket();koBox.innerHTML=phases.map(ph=>`<div class="ko-card" data-phase="${ph.prefix}"><h3>${ph.name}</h3>${ph.games.map((m,i)=>{let key='M'+m.id;let a=m.teams[0],b=m.teams[1],obj=state.ko[key]||{};let win=getWinner(obj,a,b);let c1=win&&a&&win.id===a.id?'winner':win?'loser':'';let c2=win&&b&&win.id===b.id?'winner':win?'loser':'';return `<div class="match-meta">Jogo ${m.id} • ${m.label}</div><div class="match ko-match" data-key="${key}"><div class="home team-slot ${c1}" data-side="home">${teamSelect(a,key,'home')}</div><input inputmode="numeric" pattern="[0-9]*" value="${obj.hg ?? ''}" data-ko="${key}" data-f="hg" type="number" min="0"><div class="x">x</div><input inputmode="numeric" pattern="[0-9]*" value="${obj.ag ?? ''}" data-ko="${key}" data-f="ag" type="number" min="0"><div class="away team-slot ${c2}" data-side="away">${teamSelect(b,key,'away')}</div><span class="ko-arrow"></span></div><div class="advanced-note" data-note="${key}">${win?`Avança: ${win.flag} FIFA 2026 • ${win.name}`:''}</div>`}).join('')}</div>`).join('');
-attachKOInputs();attachTeamSelects();renderChampion();appendToolsButton();}
+attachKOInputs();attachTeamSelects();if(typeof renderBetGames==='function'){renderBetGames();}renderChampion();appendToolsButton();}
 function attachTeamSelects(){document.querySelectorAll('select[data-ko-team]').forEach(sel=>{sel.onchange=e=>{let key=e.target.dataset.koTeam,side=e.target.dataset.side;state.koManual=state.koManual||{};state.koManual[key]=state.koManual[key]||{};if(e.target.value)state.koManual[key][side]=e.target.value;else delete state.koManual[key][side];save();};});}
 function attachKOInputs(){document.querySelectorAll('input[data-ko]').forEach(inp=>{inp.oninput=e=>{let key=e.target.dataset.ko;state.ko[key]=state.ko[key]||{};state.ko[key][e.target.dataset.f]=e.target.value===''?'':Math.max(0,parseInt(e.target.value)||0);saveOnly();updateKOView();};inp.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();focusNextInput(e.target);}};});}
 function focusNextInput(el){const inputs=[...document.querySelectorAll('input[data-m],input[data-ko]')].filter(i=>!i.disabled);const idx=inputs.indexOf(el);if(idx>=0&&idx<inputs.length-1){inputs[idx+1].focus();inputs[idx+1].select();}}
@@ -750,6 +776,38 @@ setTimeout(function(){bindToolsButtons();appendToolsButton();},0);
 setTimeout(function(){bindToolsButtons();appendToolsButton();},0);
 </script>
 
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+const firebaseConfig={apiKey:"AIzaSyB9cmjqZ-fdtJDo6WFUkCYWj7PPLh7W1y8",authDomain:"bolao-copa-2026-alcantara.firebaseapp.com",projectId:"bolao-copa-2026-alcantara",storageBucket:"bolao-copa-2026-alcantara.firebasestorage.app",messagingSenderId:"852389215511",appId:"1:852389215511:web:07f5e2c9791b56c160cb52"};
+const app=initializeApp(firebaseConfig),db=getFirestore(app);
+const DEVICE_KEY='copa2026-participante-device-id-v1',PROFILE_KEY='copa2026-participante-profile-v1';
+let deviceId=localStorage.getItem(DEVICE_KEY)||('p_'+Math.random().toString(36).slice(2)+Date.now().toString(36));localStorage.setItem(DEVICE_KEY,deviceId);
+let onlineBets=[];
+function status(t){const e=document.getElementById('betStatus');if(e)e.textContent=t}
+function loadProfile(){try{const p=JSON.parse(localStorage.getItem(PROFILE_KEY)||'{}');if(p.name&&betName)betName.value=p.name;if(p.contact&&betContact)betContact.value=p.contact}catch(e){}}
+function saveProfile(){localStorage.setItem(PROFILE_KEY,JSON.stringify({name:betName.value.trim(),contact:betContact.value.trim()}))}
+function teamLabel(t){return t?`${t.code||defaultCode(t.name)} - ${t.name}`:'A definir'}
+function betGames(){let keep=['Oitavas de final','Quartas de final','Semifinais','3º lugar','Final'],out=[];(typeof bracket==='function'?bracket():[]).forEach(ph=>{if(keep.includes(ph.name))ph.games.forEach(g=>out.push({phase:ph.name,id:g.id,home:g.teams[0],away:g.teams[1]}))});return out}
+window.renderBetGames=function(){const box=document.getElementById('betGames');if(!box)return;let last='';box.innerHTML=betGames().map(g=>{let h=g.phase!==last?`<div class="bet-phase">${g.phase}</div>`:'';last=g.phase;return `${h}<div class="bet-game"><div class="bet-team">${teamLabel(g.home)}</div><input type="number" min="0" inputmode="numeric" data-bet-id="${g.id}" data-side="hg" placeholder="0"><div class="x">x</div><input type="number" min="0" inputmode="numeric" data-bet-id="${g.id}" data-side="ag" placeholder="0"><div class="bet-team">${teamLabel(g.away)}</div></div>`}).join('')};
+function clearForm(){document.querySelectorAll('#bets input[data-bet-id]').forEach(i=>i.value='')}
+async function saveBet(){let name=betName.value.trim();if(!name){alert('Digite o nome do participante.');return}saveProfile();let guesses=betGames().map(g=>({id:g.id,phase:g.phase,home:teamLabel(g.home),away:teamLabel(g.away),hg:document.querySelector(`#bets input[data-bet-id="${g.id}"][data-side="hg"]`)?.value||'',ag:document.querySelector(`#bets input[data-bet-id="${g.id}"][data-side="ag"]`)?.value||''}));try{await addDoc(collection(db,'apostas'),{name,contact:betContact.value.trim(),deviceId,createdText:new Date().toLocaleString('pt-BR'),createdAt:serverTimestamp(),guesses});clearForm();alert('Aposta salva online.')}catch(e){alert('Erro ao salvar: '+e.message)}}
+window.deleteBetOnline=async(id,owner)=>{if(owner!==deviceId){alert('Você só pode excluir sua própria aposta.');return}if(confirm('Excluir sua aposta?'))await deleteDoc(doc(db,'apostas',id))}
+function esc(s){return String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^\x20-\x7E]/g,'').replace(/\\/g,'\\\\').replace(/\(/g,'\\(').replace(/\)/g,'\\)')}
+function pdf(lines){let c='BT\n/F1 12 Tf\n50 790 Td\n';lines.forEach((l,i)=>{if(i)c+='0 -18 Td\n';c+='('+esc(l).slice(0,92)+') Tj\n'});c+='ET';let o=['1 0 obj << /Type /Catalog /Pages 2 0 R >> endobj','2 0 obj << /Type /Pages /Kids [3 0 R] /Count 1 >> endobj','3 0 obj << /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 4 0 R >> >> /Contents 5 0 R >> endobj','4 0 obj << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> endobj',`5 0 obj << /Length ${c.length} >> stream\n${c}\nendstream endobj`],p='%PDF-1.4\n',off=[0];o.forEach(x=>{off.push(p.length);p+=x+'\\n'});let xref=p.length;p+=`xref\n0 ${o.length+1}\n0000000000 65535 f \n`;for(let i=1;i<off.length;i++)p+=String(off[i]).padStart(10,'0')+' 00000 n \n';p+=`trailer << /Size ${o.length+1} /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF`;return new Blob([p],{type:'application/pdf'})}
+window.generateBetPDF=id=>{let b=onlineBets.find(x=>x.id===id);if(!b)return;let lines=['BOLAO COPA DO MUNDO FIFA 2026','Apostas das oitavas em diante','Participante: '+b.name,b.contact?'Obs: '+b.contact:'','Data: '+(b.createdText||''),'------------------------------'].filter(Boolean);(b.guesses||[]).forEach(g=>{lines.push(`${g.phase} - Jogo ${g.id}`);lines.push(`${g.home} ${g.hg||'-'} x ${g.ag||'-'} ${g.away}`)});let a=document.createElement('a');a.href=URL.createObjectURL(pdf(lines.slice(0,42)));a.download='bolao_'+String(b.name||'participante').replace(/\s+/g,'_')+'.pdf';a.click()}
+function renderList(){const box=document.getElementById('betList');if(!box)return;if(!onlineBets.length){box.innerHTML='<p class="bet-subtitle">Nenhuma aposta salva ainda.</p>';return}box.innerHTML=onlineBets.map(b=>{let mine=b.deviceId===deviceId;return `<div class="bet-saved ${mine?'mine':''}"><strong>${b.name}${mine?' • Minha aposta':''}</strong><span>${b.contact?b.contact+' • ':''}${b.createdText||''}</span><div class="bet-saved-actions"><button onclick="generateBetPDF('${b.id}')">Gerar PDF</button>${mine?`<button class="danger" onclick="deleteBetOnline('${b.id}','${b.deviceId}')">Excluir</button>`:`<button class="ghost" disabled>Visualizar</button>`}</div></div>`}).join('')}
+window.initBets=function(){loadProfile();renderBetGames();renderList();if(saveBetBtn)saveBetBtn.onclick=saveBet;if(clearBetFormBtn)clearBetFormBtn.onclick=clearForm}
+onSnapshot(query(collection(db,'apostas'),orderBy('createdAt','desc')),s=>{onlineBets=s.docs.map(d=>({id:d.id,...d.data()}));status('Online • '+onlineBets.length+' aposta(s) sincronizada(s)');renderList()},e=>status('Erro Firebase: '+e.message));
+setTimeout(initBets,0);
+</script>
+
+
+<script>
+(function(){function go(tab){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));let t=document.getElementById(tab);if(t)t.classList.add('active');document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('active'));let b=document.querySelector('.tabs button[data-tab="'+tab+'"]');if(b)b.classList.add('active');if(tab==='bets'&&typeof initBets==='function')setTimeout(initBets,50);window.scrollTo({top:0,behavior:'smooth'})}setTimeout(()=>document.querySelectorAll('.tabs button[data-tab]').forEach(btn=>btn.onclick=()=>go(btn.dataset.tab)),0)})();
+</script>
+
 </body></html>
 
 <style>#knockout .champion-title,.champion-title{display:none!important;}#knockout .champion-name,.champion-name{order:-1;display:block!important;margin:0 0 10px!important;}
@@ -762,5 +820,24 @@ setTimeout(function(){bindToolsButtons();appendToolsButton();},0);
 .tools-grid{display:grid!important;grid-template-columns:1fr!important;gap:10px!important}.tools-grid button,.tools-grid label button{width:100%!important;min-height:50px!important;border-radius:16px!important}
 .tools-back{width:100%!important;margin:0 0 14px!important;background:#ffffff12!important;border:1px solid #ffffff22!important;box-shadow:none!important}
 .tools-footer{text-align:center!important;color:#a8b4c9!important;font-size:13px!important;padding:8px 0 4px!important}.tools-footer strong{display:block!important;color:#FFD700!important;font-family:'Graduate',serif!important;font-size:18px!important;margin-bottom:4px!important}
+
+
+/* BOLÃO ONLINE FIREBASE */
+#bets .bet-card{background:linear-gradient(180deg,#071c36,#061528)!important;border:1px solid #1d3859!important;border-radius:22px!important;padding:14px!important;margin-bottom:14px!important}
+#bets .bet-title{font-family:'Graduate',serif!important;color:#FFD700!important;text-transform:uppercase!important;letter-spacing:1px!important;margin:0 0 12px!important;font-size:22px!important}
+#bets .bet-subtitle,.bet-status{color:#cbd7eb!important;font-size:13px!important;line-height:1.4!important;margin:0 0 12px!important}
+.bet-status{background:#ffffff0b!important;border:1px solid #ffffff16!important;border-radius:14px!important;padding:10px!important}
+.bet-field{display:grid!important;gap:6px!important;margin-bottom:10px!important}.bet-field label{color:#a8b4c9!important;font-size:12px!important;font-weight:800!important}
+.bet-field input{width:100%!important;min-height:46px!important;border-radius:14px!important;border:1px solid #ffffff24!important;background:#071225!important;color:#fff!important;padding:10px 12px!important}
+.bet-games,.bet-list{display:grid!important;gap:10px!important}.bet-phase{margin-top:14px!important;font-family:'Graduate',serif!important;color:#FFD700!important;font-size:15px!important;text-transform:uppercase!important}
+.bet-game{display:grid!important;grid-template-columns:minmax(72px,1fr) 42px 12px 42px minmax(72px,1fr)!important;align-items:center!important;gap:6px!important;background:#061426!important;border:1px solid #1b385a!important;border-radius:14px!important;padding:8px!important}
+.bet-team{min-height:40px!important;display:flex!important;align-items:center!important;justify-content:center!important;text-align:center!important;border-radius:11px!important;background:#0a1a30!important;color:#fff!important;font-weight:900!important;font-size:13px!important;padding:4px!important}
+.bet-game input{width:42px!important;height:40px!important;border-radius:10px!important;border:1px solid #2d405d!important;background:#111c31!important;color:#fff!important;text-align:center!important;font-weight:900!important}
+.bet-actions{display:grid!important;gap:10px!important;margin-top:14px!important}.bet-actions button{width:100%!important;min-height:50px!important;border-radius:16px!important}
+.bet-saved{background:#ffffff0b!important;border:1px solid #ffffff16!important;border-radius:16px!important;padding:12px!important}.bet-saved.mine{border-color:#06b96999!important;background:#06351f55!important}
+.bet-saved strong{display:block!important;color:#fff!important;margin-bottom:4px!important}.bet-saved span{display:block!important;color:#a8b4c9!important;font-size:12px!important;margin-bottom:10px!important}
+.bet-saved-actions{display:grid!important;grid-template-columns:1fr 1fr!important;gap:8px!important}.bet-saved-actions button{min-height:42px!important;border-radius:14px!important;padding:8px!important}
+.tabs{grid-template-columns:repeat(3,1fr)!important;display:grid!important}.tabs button{min-width:0!important;width:100%!important;padding:10px 4px!important;font-size:12px!important}
+.tabs button[data-tab="bets"]::before{content:'🎯'!important;display:block!important;font-size:18px!important;margin-bottom:2px!important}
 
 </style>
