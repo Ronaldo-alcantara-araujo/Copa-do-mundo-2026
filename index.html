@@ -777,6 +777,38 @@ max-width:none!important;
   margin:10px 0!important;
 }
 
+
+/* BLOQUEIO DE APOSTAS POR DATA/HORA */
+.bet-lock-badge{
+  grid-column:1/-1!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:6px!important;
+  margin-top:6px!important;
+  padding:6px 8px!important;
+  border-radius:10px!important;
+  font-size:11px!important;
+  font-weight:900!important;
+  color:#cbd7eb!important;
+  background:#ffffff0b!important;
+  border:1px solid #ffffff16!important;
+}
+.bet-lock-badge.open{color:#20f08c!important;border-color:#06b96966!important;background:#06351f44!important}
+.bet-lock-badge.closed{color:#ff8b9a!important;border-color:#ff5b6e66!important;background:#3b121844!important}
+.bet-game.locked{opacity:.68!important;border-color:#ff5b6e66!important}
+.bet-game.locked select,.bet-game.locked input{pointer-events:none!important;opacity:.75!important}
+.bet-lock-warning{
+  color:#FFD700!important;
+  font-size:12px!important;
+  line-height:1.35!important;
+  margin-top:8px!important;
+  padding:8px!important;
+  border-radius:12px!important;
+  background:#5c410b44!important;
+  border:1px solid #FFD70055!important;
+}
+
 </style>
 </head><body>
 <div class="wrap">
@@ -788,7 +820,7 @@ max-width:none!important;
 
 <section id="bets" class="section">
   <div class="bet-card"><h2 class="bet-title">🎯 Bolão Online</h2><p class="bet-subtitle">Monte seu próprio caminho do campeão: escolha as seleções e os placares das oitavas em diante. As apostas ficam sincronizadas online para todos.</p><div id="betStatus" class="bet-status">Conectando ao Firebase...</div><div class="bet-field"><label for="betName">Nome do participante</label><input id="betName" type="text" placeholder="Digite seu nome"></div><div class="bet-field"><label for="betContact">Cidade / observação</label><input id="betContact" type="text" placeholder="Opcional"></div></div>
-  <div class="bet-card"><h3 class="bet-title">Palpites</h3><p id="betIndependentHelp" class="bet-help">Escolha livremente os times e placares. Seu rascunho fica salvo neste aparelho mesmo se você trocar de aba antes de salvar.</p><div id="betGames" class="bet-games"></div><div class="bet-actions"><button id="saveBetBtn" type="button">Salvar aposta online</button><button class="ghost" id="clearBetFormBtn" type="button">Limpar formulário</button></div></div>
+  <div class="bet-card"><h3 class="bet-title">Palpites</h3><p id="betIndependentHelp" class="bet-help">Escolha livremente os times e placares. Seu rascunho fica salvo neste aparelho. Cada jogo bloqueia automaticamente no dia e horário definido.</p><div id="betGames" class="bet-games"></div><div class="bet-actions"><button id="saveBetBtn" type="button">Salvar aposta online</button><button class="ghost" id="clearBetFormBtn" type="button">Limpar formulário</button></div></div>
   <div class="bet-card"><h3 class="bet-title">Pontuação em tempo real</h3><p class="bet-subtitle">Ranking atualizado automaticamente para todos os participantes conforme os resultados oficiais preenchidos no mata-mata.</p><div id="betScoreboard" class="bet-scoreboard"></div></div>
   <div class="bet-card"><h3 class="bet-title">Apostas salvas</h3><p class="bet-subtitle">Todos visualizam. Somente o criador exclui a própria aposta neste aparelho.</p><div id="betList" class="bet-list"></div><div id="betChampionBox"></div></div>
 </section>
@@ -1149,6 +1181,7 @@ function setEditingMode(bet){
   if(help){
     const oldNote=document.getElementById('betEditingNote'); if(oldNote) oldNote.remove(); help.insertAdjacentHTML('afterend','<div id="betEditingNote" class="bet-editing-note">Editando aposta salva. Altere os dados e toque em Atualizar aposta.</div>');
   }
+  applyBetLocks();
   saveBetDraft();
   document.getElementById('bets')?.scrollIntoView({behavior:'smooth',block:'start'});
 }
@@ -1201,7 +1234,7 @@ window.renderBetGames=function(){
   box.innerHTML=betGames().map(g=>{
     let h=g.phase!==last?`<div class="bet-phase">${g.phase}</div>`:'';
     last=g.phase;
-    return `${h}<div class="bet-game">
+    return `${h}<div class="bet-game" data-game-id="${g.id}">
       <div class="bet-team"><select class="bet-team-select" data-bet-id="${g.id}" data-side="homeTeam">${betTeamOptions('')}</select></div>
       <input type="number" min="0" inputmode="numeric" data-bet-id="${g.id}" data-side="hg" placeholder="0">
       <div class="x">x</div>
@@ -1211,6 +1244,69 @@ window.renderBetGames=function(){
   }).join('');
 };
 
+
+
+const BET_LOCK_DATES={
+  89:'2026-07-04T18:00:00-03:00',
+  90:'2026-07-04T14:00:00-03:00',
+  91:'2026-07-05T17:00:00-03:00',
+  92:'2026-07-05T21:00:00-03:00',
+  93:'2026-07-06T16:00:00-03:00',
+  94:'2026-07-06T21:00:00-03:00',
+  95:'2026-07-07T13:00:00-03:00',
+  96:'2026-07-07T17:00:00-03:00',
+  97:'2026-07-09T17:00:00-03:00',
+  98:'2026-07-10T16:00:00-03:00',
+  99:'2026-07-11T18:00:00-03:00',
+  100:'2026-07-11T22:00:00-03:00',
+  101:'2026-07-14T16:00:00-03:00',
+  102:'2026-07-15T16:00:00-03:00',
+  103:'2026-07-18T18:00:00-03:00',
+  104:'2026-07-19T16:00:00-03:00'
+};
+function betLockDate(id){return BET_LOCK_DATES[Number(id)]||null}
+function isBetLocked(id){const d=betLockDate(id);return d?Date.now()>=new Date(d).getTime():false}
+function formatBetLockDate(id){
+  const d=betLockDate(id);
+  if(!d)return '';
+  return new Date(d).toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo',day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+}
+function betLockLabel(id){return isBetLocked(id)?`🔒 Apostas encerradas em ${formatBetLockDate(id)}`:`🔓 Aberto até ${formatBetLockDate(id)}`}
+function applyBetLocks(){
+  document.querySelectorAll('#bets .bet-game').forEach(row=>{
+    const any=row.querySelector('[data-bet-id]');
+    if(!any)return;
+    const id=Number(any.dataset.betId);
+    const locked=isBetLocked(id);
+    row.classList.toggle('locked',locked);
+    row.querySelectorAll('select,input').forEach(el=>{
+      el.disabled=locked;
+      el.dataset.locked=locked?'1':'0';
+    });
+    let badge=row.querySelector('.bet-lock-badge');
+    if(!badge){
+      badge=document.createElement('div');
+      badge.className='bet-lock-badge';
+      row.appendChild(badge);
+    }
+    badge.className='bet-lock-badge '+(locked?'closed':'open');
+    badge.textContent=betLockLabel(id);
+  });
+}
+function mergeLockedGuesses(newGuesses,oldGuesses){
+  const oldMap={};
+  (oldGuesses||[]).forEach(g=>oldMap[Number(g.id)]=g);
+  return (newGuesses||[]).map(g=>{
+    const id=Number(g.id);
+    return isBetLocked(id)&&oldMap[id]?oldMap[id]:g;
+  });
+}
+function hasBlockedNewBet(guesses){
+  return (guesses||[]).some(g=>{
+    if(!isBetLocked(g.id))return false;
+    return !!(g.homeId||g.awayId||g.hg||g.ag);
+  });
+}
 
 const BET_DRAFT_KEY='copa2026-bolao-rascunho-v1';
 
@@ -1234,7 +1330,7 @@ function restoreBetDraft(){
       Object.entries(draft.fields).forEach(([key,val])=>{
         const p=key.split('_');
         const el=document.querySelector(`#bets [data-bet-id="${p[0]}"][data-side="${p[1]}"]`);
-        if(el) el.value=val;
+        if(el && !isBetLocked(p[0])) el.value=val;
       });
     }
   }catch(e){}
@@ -1266,6 +1362,13 @@ async function saveBet(){
       ag:document.querySelector(`#bets input[data-bet-id="${g.id}"][data-side="ag"]`)?.value||''
     };
   });
+  if(editingBetId){
+    const oldBet=(onlineBets||[]).find(b=>String(b.id)===String(editingBetId));
+    guesses=mergeLockedGuesses(guesses,oldBet&&oldBet.guesses);
+  }else if(hasBlockedNewBet(guesses)){
+    alert('Existem jogos já bloqueados. Você só pode apostar nos jogos que ainda estão abertos.');
+    return;
+  }
 
   const data={name,contact:betContact.value.trim(),deviceId,createdText:new Date().toLocaleString('pt-BR'),guesses};
 
@@ -1463,6 +1566,38 @@ window.generateBetPDF=function(id){
   margin:10px 0!important;
 }
 
+
+/* BLOQUEIO DE APOSTAS POR DATA/HORA */
+.bet-lock-badge{
+  grid-column:1/-1!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:6px!important;
+  margin-top:6px!important;
+  padding:6px 8px!important;
+  border-radius:10px!important;
+  font-size:11px!important;
+  font-weight:900!important;
+  color:#cbd7eb!important;
+  background:#ffffff0b!important;
+  border:1px solid #ffffff16!important;
+}
+.bet-lock-badge.open{color:#20f08c!important;border-color:#06b96966!important;background:#06351f44!important}
+.bet-lock-badge.closed{color:#ff8b9a!important;border-color:#ff5b6e66!important;background:#3b121844!important}
+.bet-game.locked{opacity:.68!important;border-color:#ff5b6e66!important}
+.bet-game.locked select,.bet-game.locked input{pointer-events:none!important;opacity:.75!important}
+.bet-lock-warning{
+  color:#FFD700!important;
+  font-size:12px!important;
+  line-height:1.35!important;
+  margin-top:8px!important;
+  padding:8px!important;
+  border-radius:12px!important;
+  background:#5c410b44!important;
+  border:1px solid #FFD70055!important;
+}
+
 </style></head><body>
   <button class="print-btn" onclick="window.print()">Salvar em PDF</button>
   <div class="page">
@@ -1606,7 +1741,7 @@ window.viewBetOnline=function(id){
   (bet.guesses||[]).forEach(function(g){
     body+='<div class="bet-view-game">'
       +'<small>'+betEscapeHtml(g.phase||'')+' • Jogo '+betEscapeHtml(g.id||'')+'</small>'
-      +betEscapeHtml(g.home||'---')+' <b>'+betEscapeHtml(g.hg||'-')+' x '+betEscapeHtml(g.ag||'-')+'</b> '+betEscapeHtml(g.away||'---')
+      +betEscapeHtml(g.home||'---')+' <b>'+betEscapeHtml(g.hg||'-')+' x '+betEscapeHtml(g.ag||'-')+'</b> '+betEscapeHtml(g.away||'---')+'<br><small>'+betEscapeHtml(betLockLabel(g.id))+'</small>'
       +'</div>';
   });
 
@@ -1642,9 +1777,10 @@ function renderList(){
     </div>`;
   }).join('');
 }
-window.initBets=function(){renderBetGames();loadProfile();restoreBetDraft();bindBetDraft();renderList();renderBetScoreboard();renderBetChampion();if(saveBetBtn)saveBetBtn.onclick=saveBet;if(clearBetFormBtn)clearBetFormBtn.onclick=clearForm}
+window.initBets=function(){renderBetGames();loadProfile();restoreBetDraft();applyBetLocks();bindBetDraft();renderList();renderBetScoreboard();renderBetChampion();if(saveBetBtn)saveBetBtn.onclick=saveBet;if(clearBetFormBtn)clearBetFormBtn.onclick=clearForm}
 onSnapshot(query(collection(db,'apostas'),orderBy('createdAt','desc')),s=>{onlineBets=s.docs.map(d=>({id:d.id,...d.data()}));status('Online • '+onlineBets.length+' aposta(s) sincronizada(s)');renderList();renderBetScoreboard();renderBetChampion()},e=>status('Erro Firebase: '+e.message));
 setTimeout(initBets,0);
+setInterval(()=>{if(typeof applyBetLocks==='function')applyBetLocks();},60000);
 </script>
 
 
@@ -1993,6 +2129,38 @@ setTimeout(initBets,0);
   border-radius:14px!important;
   padding:9px!important;
   margin:10px 0!important;
+}
+
+
+/* BLOQUEIO DE APOSTAS POR DATA/HORA */
+.bet-lock-badge{
+  grid-column:1/-1!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:6px!important;
+  margin-top:6px!important;
+  padding:6px 8px!important;
+  border-radius:10px!important;
+  font-size:11px!important;
+  font-weight:900!important;
+  color:#cbd7eb!important;
+  background:#ffffff0b!important;
+  border:1px solid #ffffff16!important;
+}
+.bet-lock-badge.open{color:#20f08c!important;border-color:#06b96966!important;background:#06351f44!important}
+.bet-lock-badge.closed{color:#ff8b9a!important;border-color:#ff5b6e66!important;background:#3b121844!important}
+.bet-game.locked{opacity:.68!important;border-color:#ff5b6e66!important}
+.bet-game.locked select,.bet-game.locked input{pointer-events:none!important;opacity:.75!important}
+.bet-lock-warning{
+  color:#FFD700!important;
+  font-size:12px!important;
+  line-height:1.35!important;
+  margin-top:8px!important;
+  padding:8px!important;
+  border-radius:12px!important;
+  background:#5c410b44!important;
+  border:1px solid #FFD70055!important;
 }
 
 </style>
