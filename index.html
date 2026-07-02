@@ -809,6 +809,36 @@ max-width:none!important;
   border:1px solid #FFD70055!important;
 }
 
+
+/* AJUSTE BOLÃO: número do jogo dentro do selo de fechamento */
+#bets .bet-game{
+  padding-top:6px!important;
+}
+#bets .bet-game-label{
+  display:none!important;
+}
+#bets .bet-lock-badge{
+  grid-column:1/-1!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:8px!important;
+  margin-top:8px!important;
+  padding:8px 10px!important;
+  border-radius:12px!important;
+  font-size:12px!important;
+  font-weight:950!important;
+  text-align:center!important;
+}
+#bets .bet-lock-badge .lock-game-number{
+  font-family:'Graduate',serif!important;
+  color:#FFD700!important;
+  white-space:nowrap!important;
+}
+#bets .bet-lock-badge .lock-text{
+  color:inherit!important;
+}
+
 </style>
 </head><body>
 <div class="wrap">
@@ -820,7 +850,7 @@ max-width:none!important;
 
 <section id="bets" class="section">
   <div class="bet-card"><h2 class="bet-title">🎯 Bolão Online</h2><p class="bet-subtitle">Monte seu próprio caminho do campeão: escolha as seleções e os placares das oitavas em diante. As apostas ficam sincronizadas online para todos.</p><div id="betStatus" class="bet-status">Conectando ao Firebase...</div><div class="bet-field"><label for="betName">Nome do participante</label><input id="betName" type="text" placeholder="Digite seu nome"></div><div class="bet-field"><label for="betContact">Cidade / observação</label><input id="betContact" type="text" placeholder="Opcional"></div></div>
-  <div class="bet-card"><h3 class="bet-title">Palpites</h3><p id="betIndependentHelp" class="bet-help">Escolha livremente os times e placares. Seu rascunho fica salvo neste aparelho. Cada jogo bloqueia automaticamente no dia e horário definido.</p><div id="betGames" class="bet-games"></div><div class="bet-actions"><button id="saveBetBtn" type="button">Salvar aposta online</button><button class="ghost" id="clearBetFormBtn" type="button">Limpar formulário</button></div></div>
+  <div class="bet-card"><h3 class="bet-title">Palpites</h3><p id="betIndependentHelp" class="bet-help">Escolha livremente os times e placares. Seu rascunho fica salvo neste aparelho. O número do jogo aparece junto com o período de fechamento da aposta. O bloqueio acontece automaticamente no horário definido.</p><div id="betGames" class="bet-games"></div><div class="bet-actions"><button id="saveBetBtn" type="button">Salvar aposta online</button><button class="ghost" id="clearBetFormBtn" type="button">Limpar formulário</button></div></div>
   <div class="bet-card"><h3 class="bet-title">Pontuação em tempo real</h3><p class="bet-subtitle">Ranking atualizado automaticamente para todos os participantes conforme os resultados oficiais preenchidos no mata-mata.</p><div id="betScoreboard" class="bet-scoreboard"></div></div>
   <div class="bet-card"><h3 class="bet-title">Apostas salvas</h3><p class="bet-subtitle">Todos visualizam. Somente o criador exclui a própria aposta neste aparelho.</p><div id="betList" class="bet-list"></div><div id="betChampionBox"></div></div>
 </section>
@@ -1290,7 +1320,7 @@ function applyBetLocks(){
       row.appendChild(badge);
     }
     badge.className='bet-lock-badge '+(locked?'closed':'open');
-    badge.textContent=betLockLabel(id);
+    badge.innerHTML=`<span class="lock-game-number">Jogo ${id}</span><span class="lock-text">${betLockLabel(id)}</span>`;
   });
 }
 function mergeLockedGuesses(newGuesses,oldGuesses){
@@ -1596,6 +1626,36 @@ window.generateBetPDF=function(id){
   border-radius:12px!important;
   background:#5c410b44!important;
   border:1px solid #FFD70055!important;
+}
+
+
+/* AJUSTE BOLÃO: número do jogo dentro do selo de fechamento */
+#bets .bet-game{
+  padding-top:6px!important;
+}
+#bets .bet-game-label{
+  display:none!important;
+}
+#bets .bet-lock-badge{
+  grid-column:1/-1!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:8px!important;
+  margin-top:8px!important;
+  padding:8px 10px!important;
+  border-radius:12px!important;
+  font-size:12px!important;
+  font-weight:950!important;
+  text-align:center!important;
+}
+#bets .bet-lock-badge .lock-game-number{
+  font-family:'Graduate',serif!important;
+  color:#FFD700!important;
+  white-space:nowrap!important;
+}
+#bets .bet-lock-badge .lock-text{
+  color:inherit!important;
 }
 
 </style></head><body>
@@ -2161,6 +2221,36 @@ setInterval(()=>{if(typeof applyBetLocks==='function')applyBetLocks();},60000);
   border-radius:12px!important;
   background:#5c410b44!important;
   border:1px solid #FFD70055!important;
+}
+
+
+/* AJUSTE BOLÃO: número do jogo dentro do selo de fechamento */
+#bets .bet-game{
+  padding-top:6px!important;
+}
+#bets .bet-game-label{
+  display:none!important;
+}
+#bets .bet-lock-badge{
+  grid-column:1/-1!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:8px!important;
+  margin-top:8px!important;
+  padding:8px 10px!important;
+  border-radius:12px!important;
+  font-size:12px!important;
+  font-weight:950!important;
+  text-align:center!important;
+}
+#bets .bet-lock-badge .lock-game-number{
+  font-family:'Graduate',serif!important;
+  color:#FFD700!important;
+  white-space:nowrap!important;
+}
+#bets .bet-lock-badge .lock-text{
+  color:inherit!important;
 }
 
 </style>
